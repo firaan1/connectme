@@ -1,0 +1,94 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Online Channels Connect
+{% endblock %}
+
+{% block body %}
+{{ channels_dict }}
+{{ users_dict }}
+
+<div class="container">
+  <div class="form-group">
+    <div class="form-group">
+      <input type="text" id="achannel" placeholder="New channel name" autocomplete="off" autofocus>
+      <button type="button" class="btn btn-primary" id="btn_achannel">Add</button>
+    </div>
+    <span id="achannel_uniq"></span>
+  </div>
+  <div>
+    {% if not channels %}
+    <h4>No channels available</h4>
+    {% else %}
+    <ul id="channel_list">
+    </ul>
+    {% endif %}
+  </div>
+</div>
+
+<span id="test"></span>
+
+<script type="text/x-handlebars-template">
+  <li>
+    {{ channel }}
+  </li>
+</script>
+
+</script>
+
+<script type="text/javascript">
+  // handlebar template
+  const channel_template = Handlebars.compile(document.querySelector('#channel_list').innerHTML);
+
+  document.addEventListener('DOMContentLoaded', () => {
+
+    alert("HI")
+    // Channel dixt
+    var channels = {{channels_dict|safe }}
+
+    // list channels
+    //  todo
+
+    // check channel unique
+    document.querySelector('#btn_achannel').disabled = true;
+    document.querySelector('#achannel').onkeyup = () => {
+      const achannel = document.querySelector('#achannel').value;
+      if (achannel.length > 0) {
+        for(channel in channels) {
+          if(achannel === channel) {
+            document.querySelector('#achannel_uniq').innerHTML = "Channel already exist"
+            document.querySelector('#btn_achannel').disabled = true;
+          } else {
+            document.querySelector('#achannel_uniq').innerHTML = ""
+            document.querySelector('#btn_achannel').disabled = false;
+          };
+        };
+      } else {
+        document.querySelector('#btn_achannel').disabled = true;
+      }
+    };
+
+
+
+    // add new channel
+    document.querySelector('#btn_achannel').onclick = () => {
+      const channel = document.querySelector('#achannel').value
+      const owner = "{{session['logged_in']}}"
+      const channel_info = {
+        [channel] : {
+          'owner' : owner,
+          'channel_messages' : {}
+        } };
+      const request = new XMLHttpRequest();
+      request.open('POST', '/addchannel');
+      request.onload = () => {
+        window.location.href = window.location;
+      }
+      const data = new FormData();
+      data.append("channel_info", JSON.stringify(channel_info));
+      request.send(data);
+    }
+  });
+
+</script>
+{% endblock %}
