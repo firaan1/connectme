@@ -4,15 +4,17 @@ import json
 
 from flask import Flask, session, render_template, request, flash, redirect, url_for, abort
 from flask_session import Session
+from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 
 # jinja2
 app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 
-# Set up database
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+socketio = SocketIO(app)
 
 Session(app)
 
@@ -52,6 +54,13 @@ def addchannel():
     users_dict[session['logged_in']]['channels_user'].append(list(channel_info.keys())[0])
     users_dict[session['logged_in']]['channels_owner'].append(list(channel_info.keys())[0])
     channels_dict.update(json.loads(request.form.get("channel_info")))
+
+@socketio.on("submit post")
+def post(data):
+    post_text = data['post_text']
+    posts = post_text
+    emit("post list", posts, broadcast=True)
+
 
 @app.route("/channels/<string:channel>")
 def channel(channel):

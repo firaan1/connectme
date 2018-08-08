@@ -12,9 +12,3 @@ if(sesssionloggedin != "False") {
   loggedout[1].style.display = "inline";
 }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-
-  
-
-});
