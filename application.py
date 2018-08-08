@@ -1,6 +1,7 @@
 import os
 import hashlib
 import json
+from datetime import datetime
 
 from flask import Flask, session, render_template, request, flash, redirect, url_for, abort
 from flask_session import Session
@@ -20,7 +21,7 @@ Session(app)
 
 users_dict = {"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": [], "channels_owner": []}}
 
-channels_dict_test = {"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "timestamp" : "sadfs"}}}}
+channels_dict_test = {"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "date" : "date", "time" : "time"}}}}
 channels_dict = channels_dict_test
 # channels_dict = {}
 
@@ -58,13 +59,34 @@ def addchannel():
 @socketio.on("submit post")
 def post(data):
     post_text = data['post_text']
-    posts = post_text
-    emit("post list", posts, broadcast=True)
+    channel = data['channel']
+    posts = channels_dict[channel]['channel_messages']
+    if not posts:
+        index = 0
+    else:
+        indexes = sorted(list(posts.keys()))
+        index = indexes[-1] + 1
+        index_rm = indexes[0]
+        if len(posts) == 100:
+            posts.pop(index_rm)
+    post_dict = {
+        'user' : session['logged_in'],
+        'message' : post_text,
+        'date' : datetime.now().strftime("%Y-%m-%d"),
+        'time' : datetime.now().strftime("%H:%M:%S")
+    }
+    posts[index] = post_dict
+    emit("post list", json.dumps(post_dict), broadcast=True)
 
 
 @app.route("/channels/<string:channel>")
 def channel(channel):
-    return render_template('channel.html', users_dict = users_dict, channels_dict = channels_dict)
+    channel_posts = channels_dict[channel]['channel_messages']
+    if not channel_posts:
+        posts_index = False
+    else:
+        posts_index = sorted(list(channel_posts.keys()))
+    return render_template('channel.html', users_dict = users_dict, channels_dict = json.dumps(channels_dict), channel = channel, posts_index = posts_index)
 
 # @app.route("/removechannel", methods = ["POST"])
 # def removechannel():

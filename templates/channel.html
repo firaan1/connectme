@@ -7,9 +7,13 @@ Online Channels Connect
 {% block body %}
 {{ channels_dict }}
 {{ users_dict }}
+{{ posts_index }}
 
 <span id="testpost"></span>
-
+<div class="container">
+  <ul id="post_list" style="list-style-type: none;">
+  </ul>
+</div>
 <div class="container">
   <form>
     <div class="form-group">
@@ -18,8 +22,30 @@ Online Channels Connect
     </div>
   </form>
 </div>
+
+<script id="posts_template" type="text/x-handlebars-template">
+  <li>
+    {% raw -%}
+      {{post_text}}
+    {%- endraw %}
+  </li>
+</script>
+
 <script type="text/javascript">
+
+  // handlebars template
+  const post_template = Handlebars.compile(document.querySelector('#posts_template').innerHTML);
+
   document.addEventListener('DOMContentLoaded', () => {
+
+    // load previous posts
+    if(String({{ posts_index }} != "False")){
+      const channels_dict = {{channels_dict|safe}};
+      for(i in {{ posts_index }}) {
+        const post_text = channels_dict["{{channel}}"]['channel_messages'][i]
+        document.querySelector('#post_list').innerHTML += post_template({'post_text' : JSON.stringify(post_text)})
+      }
+    }
 
     // connect to websocket
     var channel_socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
@@ -30,13 +56,14 @@ Online Channels Connect
       // post button
       document.querySelector('#btn_post_text').onclick = () => {
         const post_text = document.querySelector('#post_text').value;
-        channel_socket.emit('submit post', {'post_text' : post_text});
+        channel_socket.emit('submit post', {'post_text' : post_text, 'channel' : "{{ channel }}"});
       };
     });
 
     // when posted
-    channel_socket.on('post list', data => {
-      document.querySelector('#testpost').innerHTML = data
+    channel_socket.on('post list', post_text => {
+      // document.querySelector('#testpost').innerHTML = post_text
+      document.querySelector('#post_list').innerHTML += post_template({'post_text' : post_text})
     });
   });
 
