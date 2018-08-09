@@ -47,7 +47,7 @@ Online Channels Connect
   <li>
     {% raw -%}
     <a href="/channels/{{channel}}">{{channel}}</a>
-    <button type="button" class="btn btn-default dchannel c{{btnvar}}" data-btnvar="{{btnvar}}">{{btnvar}}</button>
+    <button type="button" class="btn btn-default dchannel" data-btnvar="{{btnvar}}">{{btnvar}}</button>
     {%- endraw %}
   </li>
 </script>
@@ -87,13 +87,8 @@ Online Channels Connect
           document.querySelector('#userchannels').children.item(1).innerHTML += channel_template({'channel' : channel, 'btnvar' : 'leave'});
         } else {
           document.querySelector('#allchannels_1').children.item(0).innerHTML += channel_template({'channel' : channel, 'btnvar' : 'join'});
-        };
-      };
-
-      document.querySelectorAll('.cjoin').forEach(element => {
-        element.parentElement.children.item(0).removeAttribute('href');
-      });
-
+        }
+      }
     } else {
       document.querySelector('#allchannels_0').style.display = "block";
       document.querySelector('#allchannels_1').style.display = "none";
@@ -164,33 +159,24 @@ Online Channels Connect
     // join leave and delete channel
     btn_dchannel.forEach( button => {
       button.onclick = () => {
-        const current_channel = button.parentElement.firstElementChild.innerText;
-        const current_button = button.dataset.btnvar;
-
-        const request4 = new XMLHttpRequest();
-        request4.open('POST', '/modchannel');
-        request4.onload = () => {
-          window.location.href = window.location;
-        }
-        const data = new FormData();
-        data.append("current_channel",current_channel);
-        // join
-        if(current_button === "delete"){
-
-          const getconfirmation = confirm("Do you want to delete " + current_channel)
-          if(getconfirmation){
-          } else {
-            data.append("button", "skip");
+        const current_channel = button.parentElement.firstElementChild.innerText
+        const getconfirmation = confirm("Do you want to delete " + current_channel)
+        if(getconfirmation){
+          // button.parentElement.remove();
+          const request3 = new XMLHttpRequest();
+          request3.open('POST', '/delchannel');
+          request3.onload = () => {
+            window.location.href = window.location;
           }
-        }
-        data.append("button", current_button);
-        request4.send(data);
+          const data = new FormData();
+          data.append("current_channel",current_channel);
+          request3.send(data);
 
         }
-
-      });
+      }
     });
 
+  });
 
 </script>
 {% endblock %}

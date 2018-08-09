@@ -85,13 +85,18 @@ def post(data):
     posts[index] = post_dict
     emit("post list", json.dumps(post_dict), broadcast=True)
 
-
-@app.route("/delchannel", methods = ["POST"])
-def delchannel():
+@app.route("/modchannel", methods = ["POST"])
+def modchannel():
     channel = request.form.get('current_channel')
-    channels_dict.pop(channel)
-    users_dict[session['logged_in']]['channels_user'].remove(channel)
-    users_dict[session['logged_in']]['channels_owner'].remove(channel)
+    button = request.form.get('button')
+    if button == 'delete':
+        channels_dict.pop(channel)
+        users_dict[session['logged_in']]['channels_user'].remove(channel)
+        users_dict[session['logged_in']]['channels_owner'].remove(channel)
+    elif button == 'leave':
+        users_dict[session['logged_in']]['channels_user'].remove(channel)
+    elif button == 'join':
+        users_dict[session['logged_in']]['channels_user'].append(channel)
     return redirect(url_for('channels'))
 
 @app.route("/channels/<string:channel>")
