@@ -23,7 +23,7 @@ users_dict = {}
 
 channels_dict = {}
 
-users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": [], "channels_owner": []}})
+users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": ["c1"], "channels_owner": ["c1"]}})
 channels_dict.update({"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "date" : "date", "time" : "time"}}}})
 
 @app.before_first_request
@@ -101,6 +101,10 @@ def modchannel():
 
 @app.route("/channels/<string:channel>")
 def channel(channel):
+    if channel not in channels_dict:
+        return render_template('error.html', message = "Unknown channel")
+    if channel not in users_dict[session['logged_in']]['channels_user']:
+        return render_template('error.html', message = "Join the channel to access it")
     channel_posts = channels_dict[channel]['channel_messages']
     if not channel_posts:
         posts_index = False
