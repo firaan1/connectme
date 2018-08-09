@@ -47,7 +47,7 @@ Online Channels Connect
   <li>
     {% raw -%}
     <a href="/channels/{{channel}}">{{channel}}</a>
-    <button type="button" class="btn btn-default dchannel">{{delete}}</button>
+    <button type="button" class="btn btn-default dchannel">delete</button>
     {%- endraw %}
   </li>
 </script>
@@ -67,14 +67,14 @@ Online Channels Connect
       document.querySelector('#allchannels_0').style.display = "none";
       document.querySelector('#allchannels_1').style.display = "block";
       for(channel in channels) {
-        document.querySelector('#allchannels_1').children.item(0).innerHTML += channel_template({'channel' : channel, 'delete' : 'delete'});
+        document.querySelector('#allchannels_1').children.item(0).innerHTML += channel_template({'channel' : channel});
       };
 
       // list joined channels
       if(user['channels_user'] != ""){
         document.querySelector('#userchannels').style.display = "block";
         for(channel_user in user['channels_user']){
-          document.querySelector('#userchannels').children.item(1).innerHTML += channel_template({'channel' : user['channels_user'][channel_user], 'delete' : 'delete'});
+          document.querySelector('#userchannels').children.item(1).innerHTML += channel_template({'channel' : user['channels_user'][channel_user]});
         }
       } else {
         document.querySelector('#userchannels').style.display = "none";
@@ -84,7 +84,7 @@ Online Channels Connect
       if(user['channels_owner'] != ""){
         document.querySelector('#ownerchannels').style.display = "block";
         for(channel_user in user['channels_user']){
-          document.querySelector('#ownerchannels').children.item(1).innerHTML += channel_template({'channel' : user['channels_user'][channel_user], 'delete' : 'delete'});
+          document.querySelector('#ownerchannels').children.item(1).innerHTML += channel_template({'channel' : user['channels_user'][channel_user]});
         }
       } else {
         document.querySelector('#ownerchannels').style.display = "none";

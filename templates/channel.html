@@ -6,7 +6,6 @@ Online Channels Connect
 
 {% block body %}
 {{ channels_dict }}
-{{ users_dict }}
 {{ posts_index }}
 
 <span id="testpost"></span>
@@ -39,7 +38,8 @@ Online Channels Connect
   document.addEventListener('DOMContentLoaded', () => {
 
     // load previous posts
-    if(String({{ posts_index }} != "False")){
+    // if(String({{ posts_index }} != "False")){
+    if("{{ posts_index }}" != "False"){
       const channels_dict = {{channels_dict|safe}};
       for(i in {{ posts_index }}) {
         const post_text = channels_dict["{{channel}}"]['channel_messages'][i]

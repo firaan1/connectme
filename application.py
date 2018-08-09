@@ -19,12 +19,18 @@ socketio = SocketIO(app)
 
 Session(app)
 
-users_dict = {"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": [], "channels_owner": []}}
+users_dict = {}
 
-channels_dict_test = {"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "date" : "date", "time" : "time"}}}}
-channels_dict = channels_dict_test
-# channels_dict = {}
+channels_dict = {}
 
+users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": [], "channels_owner": []}})
+channels_dict.update({"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "date" : "date", "time" : "time"}}}})
+
+@app.before_first_request
+def before_first_request():
+    if users_dict and session['logged_in']:
+        if session['logged_in'] not in list(users_dict.keys()):
+            session['logged_in'] = False
 
 @app.before_request
 def before_request():
@@ -47,7 +53,7 @@ def index():
 
 @app.route("/channels", methods = ["GET", "POST"])
 def channels():
-    return render_template('channels.html', channels_dict = json.dumps(channels_dict), users_dict = json.dumps(users_dict))
+    return render_template('channels.html', channels_dict = json.dumps(channels_dict), user_dict = json.dumps(users_dict[session['logged_in']]))
 
 @app.route("/addchannel", methods = ["POST"])
 def addchannel():
@@ -55,6 +61,7 @@ def addchannel():
     users_dict[session['logged_in']]['channels_user'].append(list(channel_info.keys())[0])
     users_dict[session['logged_in']]['channels_owner'].append(list(channel_info.keys())[0])
     channels_dict.update(json.loads(request.form.get("channel_info")))
+    return redirect(url_for('channels'))
 
 @socketio.on("submit post")
 def post(data):
@@ -79,6 +86,14 @@ def post(data):
     emit("post list", json.dumps(post_dict), broadcast=True)
 
 
+@app.route("/delchannel", methods = ["POST"])
+def delchannel():
+    channel = request.form.get('current_channel')
+    channels_dict.pop(channel)
+    users_dict[session['logged_in']]['channels_user'].remove(channel)
+    users_dict[session['logged_in']]['channels_owner'].remove(channel)
+    return redirect(url_for('channels'))
+
 @app.route("/channels/<string:channel>")
 def channel(channel):
     channel_posts = channels_dict[channel]['channel_messages']
@@ -88,9 +103,6 @@ def channel(channel):
         posts_index = sorted(list(channel_posts.keys()))
     return render_template('channel.html', users_dict = users_dict, channels_dict = json.dumps(channels_dict), channel = channel, posts_index = posts_index)
 
-# @app.route("/removechannel", methods = ["POST"])
-# def removechannel():
-#     channels_dict.pop()
 
 @app.route("/login", methods = ["GET", "POST"])
 def login():
