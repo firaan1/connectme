@@ -77,23 +77,19 @@ def post(data):
         if len(posts) == 100:
             posts.pop(index_rm)
     post_dict = {
-    index : {
         'user' : session['logged_in'],
         'message' : post_text,
         'date' : datetime.now().strftime("%Y-%m-%d"),
         'time' : datetime.now().strftime("%H:%M:%S"),
         'index' : index
-        }
     }
-    posts.update(post_dict)
+    posts[index] = post_dict
     emit("post list", json.dumps(post_dict), broadcast=True)
 
 @app.route("/delpost", methods = ["POST"])
 def delpost():
-    current_post = json.loads(request.form.get('current_post'))
-    channel = str(current_post['channel'])
-    post_index = int(current_post['post_index'])
-    channels_dict[channel]['channel_messages'].pop(post_index)
+    current_post = request.form.get('current_post')
+    channels_dict[current_post['channel']]['channel_messages'].pop(current_post['post'])
     return "HI"
 
 @app.route("/modchannel", methods = ["POST"])

@@ -6,6 +6,7 @@ Online Channels Connect
 
 {% block body %}
 {{ channels_dict }}
+{{ posts_index }}
 
 <span id="testpost"></span>
 <div class="container">
@@ -45,17 +46,19 @@ Online Channels Connect
 
 
     // load previous posts
-    const channels_dict = {{channels_dict|safe}};
-    const posts_dict = channels_dict["{{channel}}"]['channel_messages']
-    for(post_dict in posts_dict){
-      if(post_dict['data'] === datenow()){
-        date_now = date_now();
-      } else {
-        date_now = false;
+    // if(String({{ posts_index }} != "False")){
+    if("{{ posts_index }}" != "False"){
+      const channels_dict = {{channels_dict|safe}};
+      for(i in {{ posts_index }}) {
+        const post_dict = channels_dict["{{channel}}"]['channel_messages'][i]
+        if(post_dict['date'] === datenow()){
+          date_now = date_now();
+        } else {
+          date_now = false;
+        }
+        document.querySelector('#post_list').innerHTML += post_template({'post_dict' : post_dict, 'date_now' : date_now})
       }
-      document.querySelector('#post_list').innerHTML += post_template({'post_dict' : posts_dict[post_dict], 'date_now' : date_now})
     }
-
 
     // connect to websocket
     var channel_socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
@@ -78,51 +81,36 @@ Online Channels Connect
 
     // when posted
     channel_socket.on('post list', post_text => {
-      posts_dict1 = JSON.parse(post_text);
-      for(post_dict in posts_dict1){
-        if(posts_dict1[post_dict]['data'] === datenow()){
-          date_now = date_now();
-        } else {
-          date_now = false;
-        }
-        document.querySelector('#post_list').innerHTML += post_template({'post_dict' : posts_dict1[post_dict], 'date_now' : date_now})
+      // document.querySelector('#testpost').innerHTML = post_text
+      post_dict = JSON.parse(post_text)
+      if(post_dict['date'] === datenow()){
+        date_now = date_now();
+      } else {
+        date_now = "";
       }
-
-      // delete post
-      document.querySelectorAll('.dpost').forEach(
-        button => {
-          button.onclick = () => {
-            delete_post(button, "{{channel}}");
-          }
-        }
-      );
-
+      document.querySelector('#post_list').innerHTML += post_template({'post_dict' : post_dict, 'date_now' : date_now})
     });
 
     // delete post
     document.querySelectorAll('.dpost').forEach(
       button => {
         button.onclick = () => {
-          delete_post(button, "{{channel}}");
+          // backend removal
+          const request4 = new XMLHttpRequest();
+          request4.open('POST', "/delpost");
+          request4.onload = () => {
+            button.parentElement.remove();
+          }
+          const data = new FormData();
+          current_post = {
+            'channel' : "{{channel}}",
+            'post' : button.parentElement.dataset.post_index
+          }
+          data.append("current_post",current_post);
+          request4.send(data);
         }
       }
     );
-
-    function delete_post(element, channel) {
-      current_post = {
-        'channel' : channel,
-        'post_index' : element.parentElement.dataset.post_index
-      }
-      const request = new XMLHttpRequest();
-      request.open('POST', '/delpost');
-      request.onload = () => {
-        element.parentElement.remove();
-      }
-      const data = new FormData();
-      data.append("current_post", JSON.stringify(current_post));
-      request.send(data);
-    }
-
   });
 
 </script>
