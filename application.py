@@ -24,7 +24,7 @@ users_dict = {}
 channels_dict = {}
 
 users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": ["c1"], "channels_owner": ["c1"]}})
-channels_dict.update({"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "date" : "date", "time" : "time"}}}})
+channels_dict.update({"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "date" : "date", "time" : "time", "index" : 0}}}})
 
 @app.before_first_request
 def before_first_request():
@@ -80,10 +80,17 @@ def post(data):
         'user' : session['logged_in'],
         'message' : post_text,
         'date' : datetime.now().strftime("%Y-%m-%d"),
-        'time' : datetime.now().strftime("%H:%M:%S")
+        'time' : datetime.now().strftime("%H:%M:%S"),
+        'index' : index
     }
     posts[index] = post_dict
     emit("post list", json.dumps(post_dict), broadcast=True)
+
+@app.route("/delpost", methods = ["POST"])
+def delpost():
+    current_post = request.form.get('current_post')
+    channels_dict[current_post['channel']]['channel_messages'].pop(current_post['post'])
+    return "HI"
 
 @app.route("/modchannel", methods = ["POST"])
 def modchannel():

@@ -23,15 +23,15 @@ Online Channels Connect
 </div>
 
 <script id="posts_template" type="text/x-handlebars-template">
-  <div class="channelpost">
     {% raw -%}
-    <span class="post_user">{{post_text.user}}</span>
-    <span class="post_message">{{post_text.message}}</span>
-    <span class="post_date">{{post_text.date}}</span>
-    <span class="post_time">{{post_text.time}}</span>
-    {%- endraw %}
+  <div class="channelpost" data-post_index="{{post_dict.index}}">
+    <span class="post_user">{{post_dict.user}}</span>
+    <span class="post_message">{{post_dict.message}}</span>
+    <span class="post_date">{{post_dict.date}}</span>
+    <span class="post_time">{{post_dict.time}}</span>
     <button type="button" class="btn btn-primary dpost" data-btnvar="">delete</button>
   </div>
+    {%- endraw %}
 </script>
 
 <script type="text/javascript">
@@ -50,13 +50,13 @@ Online Channels Connect
     if("{{ posts_index }}" != "False"){
       const channels_dict = {{channels_dict|safe}};
       for(i in {{ posts_index }}) {
-        const post_text = channels_dict["{{channel}}"]['channel_messages'][i]
-        if(post_text['date'] === datenow()){
+        const post_dict = channels_dict["{{channel}}"]['channel_messages'][i]
+        if(post_dict['date'] === datenow()){
           date_now = date_now();
         } else {
           date_now = false;
         }
-        document.querySelector('#post_list').innerHTML += post_template({'post_text' : post_text, 'date_now' : date_now})
+        document.querySelector('#post_list').innerHTML += post_template({'post_dict' : post_dict, 'date_now' : date_now})
       }
     }
 
@@ -82,27 +82,30 @@ Online Channels Connect
     // when posted
     channel_socket.on('post list', post_text => {
       // document.querySelector('#testpost').innerHTML = post_text
-      if(post_text['date'] === datenow()){
+      post_dict = JSON.parse(post_text)
+      if(post_dict['date'] === datenow()){
         date_now = date_now();
       } else {
         date_now = "";
       }
-      document.querySelector('#post_list').innerHTML += post_template({'post_text' : JSON.parse(post_text), 'date_now' : date_now})
+      document.querySelector('#post_list').innerHTML += post_template({'post_dict' : post_dict, 'date_now' : date_now})
     });
 
     // delete post
     document.querySelectorAll('.dpost').forEach(
       button => {
         button.onclick = () => {
-
           // backend removal
           const request4 = new XMLHttpRequest();
-          request4.open('POST', '/delpost');
+          request4.open('POST', "/delpost");
           request4.onload = () => {
-            // frontend removal
             button.parentElement.remove();
           }
           const data = new FormData();
+          current_post = {
+            'channel' : "{{channel}}",
+            'post' : button.parentElement.dataset.post_index
+          }
           data.append("current_post",current_post);
           request4.send(data);
         }
