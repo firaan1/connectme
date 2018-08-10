@@ -33,8 +33,27 @@
       </div>
 
     <script>
+
+    // saving session
+    if(!localStorage.getItem('session_logged_in')){
+      if("{{session['logged_in']}}" != "False"){
+        sessionvar = {"user" : "{{session['logged_in']}}", "password" : "{{session['logged_pass']}}"}
+        localStorage.setItem('session_logged_in', JSON.stringify(sessionvar))
+      } else {
+        localStorage.removeItem('session_logged_in')
+      }
+    } else {
+      // const request7 = new XMLHttpRequest();
+      // request7.open('POST', '/setsession');
+      // request7.onload = () => {
+      //   location.href = location.protocol + '//' + document.domain + ':' + location.port;
+      // }
+      // const data = new FormData();
+      // data.append("session_logged_in", localStorage.getItem('session_logged_in'));
+      // request7.send(data);
+    }
+
     function ButtonDisplay(sesssionloggedin) {
-    // check session logged in
     if(sesssionloggedin != "False") {
       const loggedout = document.querySelectorAll('.loggedout');
       loggedout[0].style.display = "none";
@@ -51,6 +70,9 @@
     document.querySelectorAll('.btnloc').forEach(
       button => {
         button.onclick = () => {
+          if(button.dataset.urlfor === "/logout"){
+            localStorage.removeItem('session_logged_in')
+          }
           location.href = location.protocol + '//' + document.domain + ':' + location.port + button.dataset.urlfor
         }
       }

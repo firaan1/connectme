@@ -32,17 +32,24 @@ def before_first_request():
         if users_dict and session['logged_in']:
             if session['logged_in'] not in list(users_dict.keys()):
                 session['logged_in'] = False
+                session['logged_pass'] = False
     except:
         session['logged_in'] = False
+        session['logged_pass'] = False
 
 @app.before_request
 def before_request():
     if not users_dict:
         session['logged_in'] = False
+        session['logged_pass'] = False
     try:
         str(session['logged_in'])
+        if session['logged_in'] == "False":
+            session['logged_in'] = False
+            session['logged_pass'] = False
     except:
         session['logged_in'] = False
+        session['logged_pass'] = False
     if not session['logged_in']:
         if request.endpoint not in ['index', 'login', 'register', 'error']:
             return redirect(url_for('index'))
@@ -52,7 +59,7 @@ def before_request():
 
 @app.route("/")
 def index():
-    return render_template('index.html', users_dict = users_dict, sessionid = session['logged_in'], channels_dict = channels_dict)
+    return render_template('index.html', users_dict = json.dumps(users_dict), sessionid = session['logged_in'], channels_dict = channels_dict)
 
 @app.route("/channels", methods = ["GET", "POST"])
 def channels():
@@ -135,6 +142,7 @@ def login():
             if user == username:
                 if users_dict[user]['password'] == password_hash:
                     session['logged_in'] = username
+                    session['logged_pass'] = password_hash
                 else:
                     return render_template('error.html', message = "Check user credentials")
         if not session['logged_in']:
@@ -145,6 +153,7 @@ def login():
 @app.route("/logout", methods = ["GET", "POST"])
 def logout():
     session['logged_in'] = False
+    session['logged_pass'] = False
     return redirect(url_for('index'))
 
 @app.route("/register", methods = ["GET", "POST"])
@@ -168,5 +177,6 @@ def register():
         'channels_owner' : []
         }
         session['logged_in'] = username
+        session['logged_pass'] = password_hash
         return redirect(url_for('index'))
     return render_template('register.html')

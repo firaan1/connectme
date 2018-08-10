@@ -35,8 +35,6 @@ Online Channels Connect
 <script type="text/javascript">
 
   document.addEventListener('DOMContentLoaded', () => {
-
-
     // check session logged in
     ButtonDisplay("{{session['logged_in']}}");
 
@@ -120,6 +118,11 @@ Online Channels Connect
       );
     }
   });
-
+</script>
+<script>
+window.onbeforeunload = function (e) {
+// Your logic to prepare for 'Stay on this Page' goes here
+    // return "Please click 'Stay on this Page' and we will give you candy";
+};
 </script>
 {% endblock %}
