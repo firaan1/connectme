@@ -28,9 +28,12 @@ channels_dict.update({"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : 
 
 @app.before_first_request
 def before_first_request():
-    if users_dict and session['logged_in']:
-        if session['logged_in'] not in list(users_dict.keys()):
-            session['logged_in'] = False
+    try:
+        if users_dict and session['logged_in']:
+            if session['logged_in'] not in list(users_dict.keys()):
+                session['logged_in'] = False
+    except:
+        session['logged_in'] = False
 
 @app.before_request
 def before_request():
