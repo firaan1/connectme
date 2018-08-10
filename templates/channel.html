@@ -36,6 +36,7 @@ Online Channels Connect
 
   document.addEventListener('DOMContentLoaded', () => {
 
+
     // check session logged in
     ButtonDisplay("{{session['logged_in']}}");
 
@@ -73,42 +74,10 @@ Online Channels Connect
 
       };
 
-      // delete post
-      document.querySelectorAll('.dpost').forEach(
-        button => {
-          if("{{session['logged_in']}}" != button.parentElement.dataset.post_user){
-            button.remove()
-            return
-          }
-          button.onclick = () => {
-
-            channel_socket.emit('delete post', {'channel' : "{{ channel }}", 'post_index' : button.parentElement.dataset.post_index});
-            button.parentElement.remove()
-
-          }
-        }
-      );
+      delete_post();
 
     });
 
-    channel_socket.on('delete list', delete_text => {
-      delete_dict = JSON.parse(delete_text)
-      // delete post
-      document.querySelectorAll('.dpost').forEach(
-        button => {
-          if("{{session['logged_in']}}" != button.parentElement.dataset.post_user){
-            button.remove()
-            return
-          }
-          if(delete_dict['channel'] === "{{channel}}") {
-            if(delete_dict['post_index'] === button.parentElement.dataset.post_index){
-              button.parentElement.remove()
-            }
-          }
-        }
-      )
-    });
-    
     // when posted
     channel_socket.on('post list', post_text => {
       posts_dict1 = JSON.parse(post_text);
@@ -119,40 +88,37 @@ Online Channels Connect
           date_now = false;
         }
         document.querySelector('#post_list').innerHTML += post_template({'post_dict' : posts_dict1[post_dict], 'date_now' : date_now})
-      }
 
-      // delete post
+      }
+      delete_post();
+    });
+
+    // when deleted
+    channel_socket.on('post delete', text => {
+      current_post = JSON.parse(text);
+      // document.querySelectorAll("data-post_index=current_post['post_index']").remove()
+      div = document.querySelectorAll("[data-post_index=\"" + current_post['post_index'] + "\"]");
+      div.item(0).remove()
+    });
+
+    // delete button function
+    function delete_post() {
       document.querySelectorAll('.dpost').forEach(
         button => {
           if("{{session['logged_in']}}" != button.parentElement.dataset.post_user){
             button.remove()
-            return
           }
+
           button.onclick = () => {
-            delete_post(button, "{{channel}}");
+            const current_post = {
+              'channel' : "{{channel}}",
+              'post_index' : button.parentElement.dataset.post_index
+            };
+          channel_socket.emit('delete post', current_post);
           }
         }
       );
-
-    });
-
-
-
-    function delete_post(element, channel) {
-      current_post = {
-        'channel' : channel,
-        'post_index' : element.parentElement.dataset.post_index
-      }
-      const request = new XMLHttpRequest();
-      request.open('POST', '/delpost');
-      request.onload = () => {
-        element.parentElement.remove();
-      }
-      const data = new FormData();
-      data.append("current_post", JSON.stringify(current_post));
-      request.send(data);
     }
-
   });
 
 </script>

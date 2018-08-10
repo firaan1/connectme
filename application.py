@@ -23,7 +23,7 @@ users_dict = {}
 
 channels_dict = {}
 
-users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": ["c1"], "channels_owner": ["c1"]}, 'b': {'password': '92eb5ffee6ae2fec3ad71c777531578f', 'channels_user': [], 'channels_owner': []}})
+users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": ["c1"], "channels_owner": ["c1"]}, 'b': {'password': '92eb5ffee6ae2fec3ad71c777531578f', 'channels_user': ["c1"], 'channels_owner': []}})
 channels_dict.update({"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "date" : "date", "time" : "time", "index" : 0}}}})
 
 @app.before_first_request
@@ -93,18 +93,11 @@ def post(data):
 
 @socketio.on("delete post")
 def delpost(data):
-    post_index = data['post_index']
+    post_index = int(data['post_index'])
     channel = data['channel']
     channels_dict[channel]['channel_messages'].pop(post_index)
-    emit("delete list",{'channel' : channel, 'post_index' : post_index},broadcast=True)
-
-@app.route("/delpost", methods = ["POST"])
-def delpost():
-    current_post = json.loads(request.form.get('current_post'))
-    channel = str(current_post['channel'])
-    post_index = int(current_post['post_index'])
-    channels_dict[channel]['channel_messages'].pop(post_index)
-    return "HI"
+    current_post = json.dumps({'channel' : channel, 'post_index' : post_index})
+    emit("post delete", current_post, broadcast=True)
 
 @app.route("/modchannel", methods = ["POST"])
 def modchannel():
