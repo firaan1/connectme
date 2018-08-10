@@ -46,19 +46,17 @@ Online Channels Connect
 
 
     // load previous posts
-    // if(String({{ posts_index }} != "False")){
-    if("{{ posts_index }}" != "False"){
-      const channels_dict = {{channels_dict|safe}};
-      for(i in {{ posts_index }}) {
-        const post_dict = channels_dict["{{channel}}"]['channel_messages'][i]
-        if(post_dict['date'] === datenow()){
-          date_now = date_now();
-        } else {
-          date_now = false;
-        }
-        document.querySelector('#post_list').innerHTML += post_template({'post_dict' : post_dict, 'date_now' : date_now})
+    const channels_dict = {{channels_dict|safe}};
+    const posts_dict = channels_dict["{{channel}}"]['channel_messages']
+    for(post_dict in posts_dict){
+      if(post_dict['data'] === datenow()){
+        date_now = date_now();
+      } else {
+        date_now = false;
       }
+      document.querySelector('#post_list').innerHTML += post_template({'post_dict' : posts_dict[post_dict], 'date_now' : date_now})
     }
+
 
     // connect to websocket
     var channel_socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
