@@ -20,11 +20,11 @@
       <div class="container">
         <form action="">
           <div class="form-group">
-            <button type="button" class="btn btn-primary btnloc" id="btn_home" data-urlfor="index">Home</button>
-            <button type="button" class="btn btn-primary btnloc" id="btn_channels" data-urlfor="channels">Channels</button>
-            <button type="button" class="btn btn-primary loggedout btnloc" id="btn_login" data-urlfor="login">Login</button>
-            <button type="button" class="btn btn-default loggedout btnloc" id="btn_register" data-urlfor="register">Register</button>
-            <button type="button" class="btn btn-primary loggedin btnloc" id="btn_logout" data-urlfor="logout">Logout</button>
+            <button type="button" class="btn btn-primary btnloc" id="btn_home" data-urlfor="">Home</button>
+            <button type="button" class="btn btn-primary btnloc" id="btn_channels" data-urlfor="/channels">Channels</button>
+            <button type="button" class="btn btn-primary loggedout btnloc" id="btn_login" data-urlfor="/login">Login</button>
+            <button type="button" class="btn btn-default loggedout btnloc" id="btn_register" data-urlfor="/register">Register</button>
+            <button type="button" class="btn btn-primary loggedin btnloc" id="btn_logout" data-urlfor="/logout">Logout</button>
           </div>
         </form>
 
@@ -51,7 +51,7 @@
     document.querySelectorAll('.btnloc').forEach(
       button => {
         button.onclick = () => {
-          location.href = button.dataset.urlfor
+          location.href = location.protocol + '//' + document.domain + ':' + location.port + button.dataset.urlfor
         }
       }
     );
@@ -66,7 +66,7 @@
         alert("HI");
       }
     }
-    
+
     function datenow(){
       let date = new Date();
       let date_now = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
