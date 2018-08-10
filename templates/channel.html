@@ -5,7 +5,6 @@ Online Channels Connect
 {% endblock %}
 
 {% block body %}
-{{ channels_dict }}
 
 <span id="testpost"></span>
 <div class="container">
@@ -23,7 +22,7 @@ Online Channels Connect
 
 <script id="posts_template" type="text/x-handlebars-template">
     {% raw -%}
-  <div class="channelpost" data-post_index="{{post_dict.index}}">
+  <div class="channelpost" data-post_index="{{post_dict.index}}" data-post_user="{{post_dict.user}}">
     <span class="post_user">{{post_dict.user}}</span>
     <span class="post_message">{{post_dict.message}}</span>
     <span class="post_date">{{post_dict.date}}</span>
@@ -74,8 +73,42 @@ Online Channels Connect
 
       };
 
+      // delete post
+      document.querySelectorAll('.dpost').forEach(
+        button => {
+          if("{{session['logged_in']}}" != button.parentElement.dataset.post_user){
+            button.remove()
+            return
+          }
+          button.onclick = () => {
+
+            channel_socket.emit('delete post', {'channel' : "{{ channel }}", 'post_index' : button.parentElement.dataset.post_index});
+            button.parentElement.remove()
+
+          }
+        }
+      );
+
     });
 
+    channel_socket.on('delete list', delete_text => {
+      delete_dict = JSON.parse(delete_text)
+      // delete post
+      document.querySelectorAll('.dpost').forEach(
+        button => {
+          if("{{session['logged_in']}}" != button.parentElement.dataset.post_user){
+            button.remove()
+            return
+          }
+          if(delete_dict['channel'] === "{{channel}}") {
+            if(delete_dict['post_index'] === button.parentElement.dataset.post_index){
+              button.parentElement.remove()
+            }
+          }
+        }
+      )
+    });
+    
     // when posted
     channel_socket.on('post list', post_text => {
       posts_dict1 = JSON.parse(post_text);
@@ -91,6 +124,10 @@ Online Channels Connect
       // delete post
       document.querySelectorAll('.dpost').forEach(
         button => {
+          if("{{session['logged_in']}}" != button.parentElement.dataset.post_user){
+            button.remove()
+            return
+          }
           button.onclick = () => {
             delete_post(button, "{{channel}}");
           }
@@ -99,14 +136,7 @@ Online Channels Connect
 
     });
 
-    // delete post
-    document.querySelectorAll('.dpost').forEach(
-      button => {
-        button.onclick = () => {
-          delete_post(button, "{{channel}}");
-        }
-      }
-    );
+
 
     function delete_post(element, channel) {
       current_post = {

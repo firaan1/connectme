@@ -23,7 +23,7 @@ users_dict = {}
 
 channels_dict = {}
 
-users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": ["c1"], "channels_owner": ["c1"]}})
+users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": ["c1"], "channels_owner": ["c1"]}, 'b': {'password': '92eb5ffee6ae2fec3ad71c777531578f', 'channels_user': [], 'channels_owner': []}})
 channels_dict.update({"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "date" : "date", "time" : "time", "index" : 0}}}})
 
 @app.before_first_request
@@ -91,6 +91,13 @@ def post(data):
     posts.update(post_dict)
     emit("post list", json.dumps(post_dict), broadcast=True)
 
+@socketio.on("delete post")
+def delpost(data):
+    post_index = data['post_index']
+    channel = data['channel']
+    channels_dict[channel]['channel_messages'].pop(post_index)
+    emit("delete list",{'channel' : channel, 'post_index' : post_index},broadcast=True)
+
 @app.route("/delpost", methods = ["POST"])
 def delpost():
     current_post = json.loads(request.form.get('current_post'))
@@ -120,11 +127,7 @@ def channel(channel):
     if channel not in users_dict[session['logged_in']]['channels_user']:
         return render_template('error.html', message = "Join the channel to access it")
     channel_posts = channels_dict[channel]['channel_messages']
-    if not channel_posts:
-        posts_index = False
-    else:
-        posts_index = sorted(list(channel_posts.keys()))
-    return render_template('channel.html', users_dict = users_dict, channels_dict = json.dumps(channels_dict), channel = channel, posts_index = posts_index)
+    return render_template('channel.html', channels_dict = json.dumps(channels_dict), channel = channel)
 
 
 @app.route("/login", methods = ["GET", "POST"])
