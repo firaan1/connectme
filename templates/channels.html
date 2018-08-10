@@ -55,6 +55,9 @@ Online Channels Connect
 <script type="text/javascript">
 
   document.addEventListener('DOMContentLoaded', () => {
+    // check session logged in
+    ButtonDisplay("{{session['logged_in']}}");
+
     // handlebars template
     const channel_template = Handlebars.compile(document.querySelector('#channels_template').innerHTML);
 

@@ -20,11 +20,11 @@
       <div class="container">
         <form action="">
           <div class="form-group">
-            <button type="button" class="btn btn-primary" id="btn_home">Home</button>
-            <button type="button" class="btn btn-primary" id="btn_channels">Channels</button>
-            <button type="button" class="btn btn-primary loggedout" id="btn_login">Login</button>
-            <button type="button" class="btn btn-default loggedout" id="btn_register">Register</button>
-            <button type="button" class="btn btn-primary loggedin" id="btn_logout">Logout</button>
+            <button type="button" class="btn btn-primary btnloc" id="btn_home" data-urlfor="index">Home</button>
+            <button type="button" class="btn btn-primary btnloc" id="btn_channels" data-urlfor="channels">Channels</button>
+            <button type="button" class="btn btn-primary loggedout btnloc" id="btn_login" data-urlfor="login">Login</button>
+            <button type="button" class="btn btn-default loggedout btnloc" id="btn_register" data-urlfor="register">Register</button>
+            <button type="button" class="btn btn-primary loggedin btnloc" id="btn_logout" data-urlfor="logout">Logout</button>
           </div>
         </form>
 
@@ -46,6 +46,16 @@
       loggedout[0].style.display = "inline";
       loggedout[1].style.display = "inline";
     }
+
+    // button functions
+    document.querySelectorAll('.btnloc').forEach(
+      button => {
+        button.onclick = () => {
+          location.href = button.dataset.urlfor
+        }
+      }
+    );
+
     }
 
     function alphanumeric(text, tag) {

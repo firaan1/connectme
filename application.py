@@ -41,7 +41,7 @@ def before_request():
     except:
         session['logged_in'] = False
     if not session['logged_in']:
-        if request.endpoint not in ['index', 'login', 'register']:
+        if request.endpoint not in ['index', 'login', 'register', 'error']:
             return redirect(url_for('index'))
     else:
         if request.endpoint in ['login', 'register']:
@@ -126,9 +126,9 @@ def login():
                 if users_dict[user]['password'] == password_hash:
                     session['logged_in'] = username
                 else:
-                    render_template('error.html', message = "Check user credentials")
+                    return render_template('error.html', message = "Check user credentials")
         if not session['logged_in']:
-            render_template('error.html', message = "Unknown user")
+            return render_template('error.html', message = "Unknown user")
         return redirect(url_for('index'))
     return render_template('login.html')
 

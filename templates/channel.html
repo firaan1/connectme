@@ -32,10 +32,13 @@ Online Channels Connect
 
 <script type="text/javascript">
 
-  // handlebars template
-  const post_template = Handlebars.compile(document.querySelector('#posts_template').innerHTML);
 
   document.addEventListener('DOMContentLoaded', () => {
+    // check session logged in
+    ButtonDisplay("{{session['logged_in']}}");
+
+    // handlebars template
+    const post_template = Handlebars.compile(document.querySelector('#posts_template').innerHTML);
 
     // load previous posts
     // if(String({{ posts_index }} != "False")){
@@ -58,6 +61,11 @@ Online Channels Connect
         const post_text = document.querySelector('#post_text').value;
         channel_socket.emit('submit post', {'post_text' : post_text, 'channel' : "{{ channel }}"});
       };
+
+      // pressing enter in text field
+      document.querySelector('#post_text').onkeypress = () => {
+        alert(String(this.key))
+      }
     });
 
     // when posted

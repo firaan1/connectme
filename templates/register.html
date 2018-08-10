@@ -8,7 +8,7 @@
     <h1>Register User</h1>
     <form action="{{ url_for('register')}}" method="post">
       <div class="form-group">
-        <input class="form-control" type="text" name="username" placeholder="User Name">
+        <input class="form-control" type="text" name="username" placeholder="User Name" autofocus>
       </div>
       <div class="form-group">
         <input class="form-control" type="password" name="password" placeholder="Password">
@@ -21,5 +21,15 @@
         <button class="btn btn-primary">Register</button>
       </div>
     </form>
+
+
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+
+      // check session logged in
+      ButtonDisplay("{{session['logged_in']}}");
+      });
+
+    </script>
 
 {% endblock %}
