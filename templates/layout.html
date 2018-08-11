@@ -4,10 +4,10 @@
       <title>{% block title %}
       {% endblock %}</title>
       <link rel="stylesheet" href="{{url_for('static', filename='project2.css')}}">
-      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
       <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
@@ -33,24 +33,33 @@
       </div>
 
     <script>
+    alert("{{session['logged_in']}}")
 
-    // saving session
+    // saving session variables
     if(!localStorage.getItem('session_logged_in')){
       if("{{session['logged_in']}}" != "False"){
         sessionvar = {"user" : "{{session['logged_in']}}", "password" : "{{session['logged_pass']}}"}
         localStorage.setItem('session_logged_in', JSON.stringify(sessionvar))
-      } else {
-        localStorage.removeItem('session_logged_in')
       }
     } else {
-      // const request7 = new XMLHttpRequest();
-      // request7.open('POST', '/setsession');
-      // request7.onload = () => {
-      //   location.href = location.protocol + '//' + document.domain + ':' + location.port;
-      // }
-      // const data = new FormData();
-      // data.append("session_logged_in", localStorage.getItem('session_logged_in'));
-      // request7.send(data);
+      const session_logged_in = JSON.parse(localStorage.getItem('session_logged_in'));
+      if("{{session['logged_in']}}" != "False"){
+        if("{{session['logged_in']}}" === session_logged_in['user'] && "{{session['logged_pass']}}" === session_logged_in['password']){
+        } else {
+          sessionvar = {"user" : "{{session['logged_in']}}", "password" : "{{session['logged_pass']}}"}
+          localStorage.setItem('session_logged_in', JSON.stringify(sessionvar))
+        }
+      } else {
+        // login user from local session
+        const request7 = new XMLHttpRequest();
+        request7.open('POST', '/login');
+        request7.onload = () => {
+          window.location.href = window.location
+        }
+        const data = new FormData();
+        data.append("session_logged_in", JSON.stringify(session_logged_in));
+        request7.send(data);
+      }
     }
 
     function ButtonDisplay(sesssionloggedin) {

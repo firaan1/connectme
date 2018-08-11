@@ -133,9 +133,15 @@ def channel(channel):
 @app.route("/login", methods = ["GET", "POST"])
 def login():
     if request.method == "POST":
+        session_logged_in = request.form.get('session_logged_in')
         username = request.form.get('username')
         password = request.form.get('password')
-        password_hash = hashlib.md5(password.encode('utf-8')).hexdigest()
+        if session_logged_in:
+            session_logged_in = json.loads(session_logged_in)
+            username = session_logged_in['user']
+            password_hash = session_logged_in['password']
+        else:
+            password_hash = hashlib.md5(password.encode('utf-8')).hexdigest()
         if not users_dict:
             return render_template('error.html', message = "Unknown user")
         for user in users_dict:
