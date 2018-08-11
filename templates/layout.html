@@ -23,8 +23,8 @@
             <button type="button" class="btn btn-primary btnloc" id="btn_home" data-urlfor="">Home</button>
             <button type="button" class="btn btn-primary btnloc" id="btn_channels" data-urlfor="/channels">Channels</button>
             <button type="button" class="btn btn-primary loggedout btnloc" id="btn_login" data-urlfor="/login">Login</button>
-            <button type="button" class="btn btn-default loggedout btnloc" id="btn_register" data-urlfor="/register">Register</button>
             <button type="button" class="btn btn-primary loggedin btnloc" id="btn_logout" data-urlfor="/logout">Logout</button>
+            <button type="button" class="btn btn-default loggedout btnloc" id="btn_register" data-urlfor="/register">Register</button>
           </div>
         </form>
 
@@ -33,9 +33,9 @@
       </div>
 
     <script>
-    alert("{{session['logged_in']}}")
 
-    // saving session variables
+
+    // saving session credentials
     if(!localStorage.getItem('session_logged_in')){
       if("{{session['logged_in']}}" != "False"){
         sessionvar = {"user" : "{{session['logged_in']}}", "password" : "{{session['logged_pass']}}"}
@@ -63,6 +63,8 @@
     }
 
     function ButtonDisplay(sesssionloggedin) {
+      //
+      // localStorage.removeItem('last_channel')
     if(sesssionloggedin != "False") {
       const loggedout = document.querySelectorAll('.loggedout');
       loggedout[0].style.display = "none";
@@ -79,6 +81,7 @@
     document.querySelectorAll('.btnloc').forEach(
       button => {
         button.onclick = () => {
+          localStorage.removeItem('last_channel')
           if(button.dataset.urlfor === "/logout"){
             localStorage.removeItem('session_logged_in')
           }
@@ -87,15 +90,6 @@
       }
     );
 
-    }
-
-    function alphanumeric(text, tag) {
-      let restrict = /^[0-9a-zA-Z]+$/;
-      if (text.value.match(restrict)) {
-        // pass
-      } else {
-        alert("HI");
-      }
     }
 
     function datenow(){

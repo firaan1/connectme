@@ -35,8 +35,14 @@ Online Channels Connect
 <script type="text/javascript">
 
   document.addEventListener('DOMContentLoaded', () => {
+
     // check session logged in
     ButtonDisplay("{{session['logged_in']}}");
+
+    // ButtonDisplay and localstorage order is important
+    // saving channels page
+    localStorage.setItem('last_channel', window.location);
+
 
     // handlebars template
     const post_template = Handlebars.compile(document.querySelector('#posts_template').innerHTML);

@@ -14,6 +14,11 @@ Online Channels Connect
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
 
+  // redirect to channel page
+  if(localStorage.getItem('last_channel')){
+    window.location = localStorage.getItem('last_channel');
+  }
+
   // check session logged in
   ButtonDisplay("{{session['logged_in']}}");
   });
