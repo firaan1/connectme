@@ -5,8 +5,9 @@ Online Channels Connect
 {% endblock %}
 
 {% block body %}
-
-<span id="testpost"></span>
+<div class="container">
+  <div class="form-group">
+    <button id="dchannel" type="button" class="btn btn-primary">Delete Channel</button>
 <div class="container">
   <div id="post_list">
   </div>
@@ -122,7 +123,26 @@ Online Channels Connect
           }
         }
       );
+    };
+    document.querySelector('#dchannel').onclick = () => {
+      const request = new XMLHttpRequest();
+      request.open('POST', '/modchannel');
+      request.onload = () => {
+        if(getconfirmation){
+          window.location.href = location.protocol + "//" + document.domain + ":" + location.port + "/channels"
+        }
+      }
+      const data = new FormData();
+      data.append("current_channel", "{{channel}}");
+      const getconfirmation = confirm("Do you want to delete " + "{{channel}}");
+      if(getconfirmation){
+        data.append("button", "delete");
+      } else {
+        data.append("button", "skip");
+      }
+      request.send(data);
     }
+
   });
 </script>
 <script>
