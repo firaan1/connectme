@@ -81,7 +81,7 @@
     document.querySelectorAll('.btnloc').forEach(
       button => {
         button.onclick = () => {
-          localStorage.removeItem('last_channel')
+          localStorage.removeItem('last_channel');
           if(button.dataset.urlfor === "/logout"){
             localStorage.removeItem('session_logged_in')
           }

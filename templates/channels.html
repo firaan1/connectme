@@ -5,9 +5,6 @@ Online Channels Connect
 {% endblock %}
 
 {% block body %}
-{{ channels_dict }}
-<hr>
-{{ user_dict }}
 
 <div class="container">
   <div class="form-group">
@@ -53,6 +50,8 @@ Online Channels Connect
 </script>
 
 <script type="text/javascript">
+
+  localStorage.removeItem('last_channel');
 
   document.addEventListener('DOMContentLoaded', () => {
     // check session logged in
@@ -114,7 +113,8 @@ Online Channels Connect
       if (achannel.length > 0) {
 
         // removing spl characters
-        var regex = /^\w+$/;
+        // var regex = /^\w+$/;
+        var regex = /^[A-Za-z0-9_ ]+$/;
         if (achannel.match(regex)){
           achannel_uniq.innerHTML = ""
           btn_achannel.disabled = false;
