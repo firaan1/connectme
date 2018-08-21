@@ -4,8 +4,31 @@
 {% endblock %}
 
 {% block body %}
-<h1>User Login</h1>
+<div class="container cont">
+<h3>User Login</h3>
 <form action="{{ url_for('login')}}" method="post">
+	<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <div class="card text-center card  bg-default mb-3">
+          <div class="card-header">
+            LOGIN
+          </div>
+          <div class="card-body">
+               <input id="login_username" type="text" name="username" class="form-control input-sm chat-input" placeholder="Username" autofocus/>
+            </br>
+            <input id="login_password" type="password" name="password" class="form-control input-sm chat-input" placeholder="Password" />
+          </div>
+          <div class="card-footer text-muted">
+            <button id="btn_login1" class="btn btn-secondary" disabled>LOGIN</button>
+          </div>
+					<div class="form-group">
+						<a href="{{ url_for('register')}}">Signup</a>
+					</div>
+        </div>
+  		</div>
+		</div>
+</form>
+<!-- <form action="{{ url_for('login')}}" method="post">
 	<div class="form-group">
 		<input class="form-control" type="text" name="username" placeholder="User Name" autofocus>
 		<input class="form-control" type="password" name="password" placeholder="Password">
@@ -18,16 +41,24 @@
 	<div class="form-group">
 		<button class="btn btn-primary">Login</button>
 	</div>
-</form>
-
+</form> -->
+</div>
 <script type="text/javascript">
 
   localStorage.removeItem('last_channel');
-	
+
   document.addEventListener('DOMContentLoaded', () => {
 
   // check session logged in
   ButtonDisplay("{{session['logged_in']}}");
+
+	document.onkeyup = () => {
+		if (document.querySelector('#login_username').value.length > 0 && document.querySelector('#login_password').value.length > 0){
+			document.querySelector('#btn_login1').disabled = false;
+		} else {
+			document.querySelector('#btn_login1').disabled = true;
+		}
+	};
   });
 
 </script>

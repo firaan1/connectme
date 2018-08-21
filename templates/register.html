@@ -4,8 +4,31 @@
 {% endblock %}
 
 {% block body %}
-
-    <h1>Register User</h1>
+<div class="container cont">
+<h3>User Signup</h3>
+<form action="{{ url_for('register')}}" method="post">
+	<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <div class="card text-center card  bg-default mb-3">
+          <div class="card-header">
+            Sign Up
+          </div>
+          <div class="card-body">
+              <input id="in_username" type="text" name="username" class="form-control input-sm chat-input" placeholder="Username" autofocus/>
+            </br>
+              <input id="in_password" type="password" name="password" class="form-control input-sm chat-input" placeholder="Password" />
+            </br>
+              <input id="in_password2" type="password" name="password_retype" class="form-control input-sm chat-input" placeholder="Re-enter Password" />
+          </div>
+          <div class="card-footer text-muted">
+            <button class="btn btn-secondary" id="btn_signup" disabled>Sign Up</button>
+          </div>
+        </div>
+  		</div>
+		</div>
+</form>
+</div>
+    <!-- <h1>Register User</h1>
     <form action="{{ url_for('register')}}" method="post">
       <div class="form-group">
         <input class="form-control" type="text" name="username" placeholder="User Name" autofocus>
@@ -20,17 +43,26 @@
       <div class="form-group">
         <button class="btn btn-primary">Register</button>
       </div>
-    </form>
+    </form> -->
 
 
     <script type="text/javascript">
 
       localStorage.removeItem('last_channel');
-      
+
       document.addEventListener('DOMContentLoaded', () => {
 
       // check session logged in
       ButtonDisplay("{{session['logged_in']}}");
+
+      document.onkeyup = () => {
+        if (document.querySelector('#in_username').value.length > 0 && document.querySelector('#in_password').value.length > 0){
+          document.querySelector('#btn_signup').disabled = false;
+        } else {
+          document.querySelector('#btn_signup').disabled = true;
+        }
+      };
+
       });
 
     </script>

@@ -5,31 +5,30 @@ Online Channels Connect
 {% endblock %}
 
 {% block body %}
-<div class="container">
-  <div class="form-group">
-    <button id="dchannel" type="button" class="btn btn-primary">Delete Channel</button>
-<div class="container">
-  <div id="post_list">
-  </div>
+<div class="container cont">
+    <button id="dchannel" type="button" class="btn btn-dark pull-right">Delete Channel</button>
+        <div id="post_list">
+        </div>
+        <div class="row">
+          <div class="form-group col-sm-6">
+            <input id="post_text" type="text" class="form-control" placeholder="Enter you post here" autofocus>
+          </div>
+            <div class="col-sm-4">
+              <button id="btn_post_text" type="button" class="btn btn-primary">Send</button>
+            </div>
+        </div>
 </div>
-<div class="container">
-  <form>
-    <div class="form-group">
-      <input id="post_text" type="text" class="form-control" placeholder="Enter you post here" autofocus>
-      <button id="btn_post_text" type="button" class="btn btn-primary">Post</button>
-    </div>
-  </form>
-</div>
-
 <script id="posts_template" type="text/x-handlebars-template">
     {% raw -%}
-  <div class="channelpost" data-post_index="{{post_dict.index}}" data-post_user="{{post_dict.user}}">
-    <span class="post_user">{{post_dict.user}}</span>
-    <span class="post_message">{{post_dict.message}}</span>
-    <span class="post_date">{{post_dict.date}}</span>
-    <span class="post_time">{{post_dict.time}}</span>
-    <button type="button" class="btn btn-primary dpost" data-btnvar="">delete</button>
-  </div>
+    <div class="col-sm-12">
+        <div class="channelpost row message-bubble" data-post_index="{{post_dict.index}}" data-post_user="{{post_dict.user}}">
+          <span class="post_user col-sm-12"><strong>User Name: {{post_dict.user}}</strong></span></br>
+          <span class="post_message col-sm-6"><strong>Message: </strong>{{post_dict.message}}</span>
+          <span class="post_date col-sm-2">{{post_dict.date}}</span>
+          <span class="post_time col-sm-2">{{post_dict.time}}</span>
+          <button type="button" class="btn btn-dark dpost" data-btnvar="">delete</button>
+        </div>
+    </div>
     {%- endraw %}
 </script>
 

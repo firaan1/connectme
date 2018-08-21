@@ -3,7 +3,7 @@
     <head>
       <title>{% block title %}
       {% endblock %}</title>
-      <link rel="stylesheet" href="{{url_for('static', filename='project2.css')}}">
+      <!-- <link rel="stylesheet" href="{{url_for('static', filename='project2.css')}}"> -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -11,27 +11,29 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
       <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
-
       <!-- <script src="{{url_for('static', filename='socket.io.min.js')}}" ></script>
       <script src="{{url_for('static', filename='handlebars.min.js')}}" ></script> -->
       <!-- <script src="{{url_for('static', filename='init.js')}}" ></script> -->
     </head>
     <body>
-      <div class="container">
-        <form action="">
-          <div class="form-group">
-            <button type="button" class="btn btn-primary btnloc" id="btn_home" data-urlfor="">Home</button>
-            <button type="button" class="btn btn-primary btnloc" id="btn_channels" data-urlfor="/channels">Channels</button>
-            <button type="button" class="btn btn-primary loggedout btnloc" id="btn_login" data-urlfor="/login">Login</button>
-            <button type="button" class="btn btn-primary loggedin btnloc" id="btn_logout" data-urlfor="/logout">Logout</button>
-            <button type="button" class="btn btn-default loggedout btnloc" id="btn_register" data-urlfor="/register">Register</button>
-          </div>
-        </form>
-
-        {% block body%}
-        {% endblock %}
+      <!--Header Starts  -->
+      <div class="header">
+        <h2 class="text-left"><strong>Connecting Messenger</strong></h2>
       </div>
+      <!--Header Ends  -->
 
+      <div style="overflow:auto">
+        <div class="menu">
+
+          <button type="button" class="btn btn-dark btnloc" id="btn_home" data-urlfor=""> Home</button>
+          <button type="button" class="btn btn-dark btnloc" id="btn_channels" data-urlfor="/channels">Channels</button>
+          <button type="button" class="btn btn-dark loggedout btnloc" id="btn_login" data-urlfor="/login">Login</button>
+          <button type="button" class="btn btn-dark loggedin btnloc" id="btn_logout" data-urlfor="/logout">Logout</button>
+          <button type="button" class="btn btn-dark loggedout btnloc" id="btn_register" data-urlfor="/register">Sign Up</button>
+        </div>
+
+      {% block body%}
+      {% endblock %}
     <script>
 
 
@@ -99,4 +101,34 @@
     }
 
     </script>
+    <style>
+    .header{
+        background-color:#343a40;
+        padding:15px;
+        text-align:center;
+        font-family: serif;
+        color: #ffffff;
+      }
+      .menu {
+        float:left;
+        width:15%;
+        text-align:center;
+        height: 490px;
+        background-color: #a6a6a6;
+      }
+      .menu button {
+        padding:8px;
+        margin-top:7px;
+        display:block;
+        width:100%;
+        color:#ffffff;
+      }
+      .cont{
+        margin-top: 10px;
+        margin-right: 5px;
+      }
+      h3{
+        color: #4d0026;
+      }
+    </style>
     </body>

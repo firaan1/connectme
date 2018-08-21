@@ -5,6 +5,7 @@ Online Channels Connect
 {% endblock %}
 
 {% block body %}
+
 <div class="container cont">
   <div class="row">
     <div class="col-md-4 offset-md-4">
@@ -15,52 +16,56 @@ Online Channels Connect
           <div class="card-body">
             <div class="form-group">
               <input type="text" id="achannel" placeholder="New channel name"  class="form-control input-sm chat-input" autocomplete="off" autofocus pattern="[A-Za-z0-9]">
+              <!-- <button type="button" class="btn btn-primary" id="btn_achannel">Add</button> -->
             </div>
           </div>
           <div class="card-footer text-muted">
-            <button type="button" id="btn_achannel" class="btn btn-secondary">Create</button>
+            <button type="button" id="tn_achannel" class="btn btn-secondary">Create</button>
           </div>
         </div>
       </div>
       <span id="achannel_uniq"></span>
   </div>
 </div>
-<div class="container">
-    <div class="row">
-      <div class="col-sm-1 well">
-        <div id="allchannels_0">
-          <h5>No channels available</h5>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="card card-body bg-light" id="allchannels_1">
-          <h5>All Channels</h5>
-          <ul>
-          </ul>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="card card-body bg-light"  id="userchannels">
-          <h5>Joined channels</h5>
-          <ul>
-          </ul>
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="card card-body bg-light"  id="ownerchannels">
-          <h5>Owned channels</h5>
-          <ul>
-          </ul>
-        </div>
-      </div>
+
+  <!-- <div class="form-group">
+    <div class="form-group">
+      <input type="text" id="achannel" placeholder="New channel name" autocomplete="off" autofocus pattern="[A-Za-z0-9]">
+      <button type="button" class="btn btn-primary" id="btn_achannel">Add</button>
+    </div>
+    <span id="achannel_uniq"></span>
+  </div> -->
+
+    <div id="allchannels_0">
+      <h4>No channels available</h4>
+    </div>
+
+    <div id="allchannels_1">
+      <h4>All Channels</h4>
+      <ul>
+      </ul>
+    </div>
+
+  <div id="userchannels">
+    <h4>Joined channels</h4>
+    <ul>
+    </ul>
+  </div>
+
+  <div id="ownerchannels">
+    <h4>Owned channels</h4>
+    <ul>
+    </ul>
+  </div>
 </div>
+
 <span id="test"></span>
 
 <script id="channels_template" type="text/x-handlebars-template">
   <li>
     {% raw -%}
     <a href="/channels/{{channel}}">{{channel}}</a>
-    <button type="button" class="btn btn-dark pull-right dchannel c{{btnvar}}" data-btnvar="{{btnvar}}">{{btnvar}}</button>
+    <button type="button" class="btn btn-default dchannel c{{btnvar}}" data-btnvar="{{btnvar}}">{{btnvar}}</button>
     {%- endraw %}
   </li>
 </script>
