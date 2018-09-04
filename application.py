@@ -5,7 +5,9 @@ from datetime import datetime
 
 from flask import Flask, session, render_template, request, flash, redirect, url_for, abort
 from flask_session import Session
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit,
+
+from functools import wraps
 
 app = Flask(__name__)
 
@@ -23,8 +25,27 @@ users_dict = {}
 
 channels_dict = {}
 
+max_posts = 5
+
 users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": ["c1"], "channels_owner": ["c1"]}, 'b': {'password': '92eb5ffee6ae2fec3ad71c777531578f', 'channels_user': ["c1"], 'channels_owner': []}})
 channels_dict.update({"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "date" : "date", "time" : "time", "index" : 0}}}})
+
+# taken from flask webpage decorators
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session['logged_in'] is None or not session['logged_in']:
+            return redirect(url_for('login', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
+
+def logout_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session['logged_in'] :
+            return render_template('error.html', message = "User already logged in!")
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.before_first_request
 def before_first_request():
@@ -39,33 +60,46 @@ def before_first_request():
 
 @app.before_request
 def before_request():
-    if not users_dict:
-        session['logged_in'] = False
-        session['logged_pass'] = False
     try:
-        str(session['logged_in'])
-        if session['logged_in'] == "False":
-            session['logged_in'] = False
-            session['logged_pass'] = False
+        if users_dict and session['logged_in']:
+            if session['logged_in'] not in list(users_dict.keys()):
+                session['logged_in'] = False
+                session['logged_pass'] = False
     except:
         session['logged_in'] = False
         session['logged_pass'] = False
-    if not session['logged_in']:
-        if request.endpoint not in ['index', 'login', 'register', 'error']:
-            return redirect(url_for('index'))
-    else:
-        if request.endpoint in ['login', 'register']:
-            return redirect(url_for('index'))
+
+# @app.before_request
+# def before_request():
+#     if not users_dict:
+#         session['logged_in'] = False
+#         session['logged_pass'] = False
+#     try:
+#         str(session['logged_in'])
+#         if session['logged_in'] == "False":
+#             session['logged_in'] = False
+#             session['logged_pass'] = False
+#     except:
+#         session['logged_in'] = False
+#         session['logged_pass'] = False
+#     if not session['logged_in']:
+#         if request.endpoint not in ['index', 'login', 'register', 'error']:
+#             return redirect(url_for('index'))
+#     else:
+#         if request.endpoint in ['login', 'register']:
+#             return redirect(url_for('index'))
 
 @app.route("/")
 def index():
     return render_template('index.html', users_dict = json.dumps(users_dict), sessionid = session['logged_in'], channels_dict = channels_dict)
 
 @app.route("/channels", methods = ["GET", "POST"])
+@login_required
 def channels():
     return render_template('channels.html', channels_dict = json.dumps(channels_dict), user_dict = json.dumps(users_dict[session['logged_in']]))
 
 @app.route("/addchannel", methods = ["POST"])
+@login_required
 def addchannel():
     channel_info = json.loads(request.form.get("channel_info"))
     users_dict[session['logged_in']]['channels_user'].append(list(channel_info.keys())[0])
@@ -107,6 +141,7 @@ def delpost(data):
     emit("post delete", current_post, broadcast=True)
 
 @app.route("/modchannel", methods = ["POST"])
+@login_required
 def modchannel():
     channel = request.form.get('current_channel')
     button = request.form.get('button')
@@ -121,6 +156,7 @@ def modchannel():
     return redirect(url_for('channels'))
 
 @app.route("/channels/<string:channel>")
+@login_required
 def channel(channel):
     if channel not in channels_dict:
         return render_template('error.html', message = "Unknown channel")
@@ -129,8 +165,8 @@ def channel(channel):
     channel_posts = channels_dict[channel]['channel_messages']
     return render_template('channel.html', channels_dict = json.dumps(channels_dict), channel = channel)
 
-
 @app.route("/login", methods = ["GET", "POST"])
+@logout_required
 def login():
     if request.method == "POST":
         session_logged_in = request.form.get('session_logged_in')
@@ -157,12 +193,14 @@ def login():
     return render_template('login.html')
 
 @app.route("/logout", methods = ["GET", "POST"])
+@login_required
 def logout():
     session['logged_in'] = False
     session['logged_pass'] = False
     return redirect(url_for('index'))
 
 @app.route("/register", methods = ["GET", "POST"])
+@logout_required
 def register():
     if request.method == "POST":
         username = request.form.get('username')
