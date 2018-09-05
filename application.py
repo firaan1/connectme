@@ -5,7 +5,7 @@ from datetime import datetime
 
 from flask import Flask, session, render_template, request, flash, redirect, url_for, abort
 from flask_session import Session
-from flask_socketio import SocketIO, emit,
+from flask_socketio import SocketIO, emit
 
 from functools import wraps
 
@@ -25,7 +25,7 @@ users_dict = {}
 
 channels_dict = {}
 
-max_posts = 5
+max_posts = 100
 
 users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": ["c1"], "channels_owner": ["c1"]}, 'b': {'password': '92eb5ffee6ae2fec3ad71c777531578f', 'channels_user': ["c1"], 'channels_owner': []}})
 channels_dict.update({"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "date" : "date", "time" : "time", "index" : 0}}}})
@@ -118,7 +118,7 @@ def post(data):
         indexes = sorted(list(posts.keys()))
         index = indexes[-1] + 1
         index_rm = indexes[0]
-        if len(posts) == 100:
+        if len(posts) == max_posts:
             posts.pop(index_rm)
     post_dict = {
     index : {
@@ -163,7 +163,7 @@ def channel(channel):
     if channel not in users_dict[session['logged_in']]['channels_user']:
         return render_template('error.html', message = "Join the channel to access it")
     channel_posts = channels_dict[channel]['channel_messages']
-    return render_template('channel.html', channels_dict = json.dumps(channels_dict), channel = channel)
+    return render_template('channel.html', channels_dict = json.dumps(channels_dict), channel = channel, max_posts = max_posts)
 
 @app.route("/login", methods = ["GET", "POST"])
 @logout_required

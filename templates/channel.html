@@ -6,8 +6,10 @@ Online Channels Connect
 
 {% block body %}
 <div class="container cont">
-    <button id="dchannel" type="button" class="btn btn-dark pull-right">Delete Channel</button>
-        <div id="post_list">
+    <div class="form-group">
+      <button id="dchannel" type="button" class="btn btn-dark pull-right">Delete Channel</button>
+    </div>
+        <div id="post_list" class="scrolltable">
         </div>
         <div class="row">
           <div class="form-group col-sm-6">
@@ -20,7 +22,7 @@ Online Channels Connect
 </div>
 <script id="posts_template" type="text/x-handlebars-template">
     {% raw -%}
-    <div class="col-sm-12">
+    <div id="post_index_{{post_dict.index}}" class="col-sm-12">
         <div class="channelpost row message-bubble" data-post_index="{{post_dict.index}}" data-post_user="{{post_dict.user}}">
           <span class="post_user col-sm-12"><strong>User Name: {{post_dict.user}}</strong></span></br>
           <span class="post_message col-sm-6"><strong>Message: </strong>{{post_dict.message}}</span>
@@ -49,7 +51,13 @@ Online Channels Connect
 
 
     // load previous posts
-    const channels_dict = {{channels_dict|safe}};
+    channels_dict = {{channels_dict|safe}};
+    // removing channel delete button for other users
+    if(channels_dict["{{channel}}"].owner === "{{session['logged_in']}}"){
+      document.querySelector('#dchannel').style.display = "block";
+    } else {
+      document.querySelector('#dchannel').style.display = "none";
+    }
     const posts_dict = channels_dict["{{channel}}"]['channel_messages']
     for(post_dict in posts_dict){
       if(post_dict['data'] === datenow()){
@@ -60,6 +68,9 @@ Online Channels Connect
       document.querySelector('#post_list').innerHTML += post_template({'post_dict' : posts_dict[post_dict], 'date_now' : date_now})
     }
 
+    // scroll bottom
+    post_list = document.querySelector('#post_list');
+    post_list.scrollTop = post_list.scrollHeight - post_list.clientHeight;
 
     // connect to websocket
     var channel_socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
@@ -82,8 +93,21 @@ Online Channels Connect
 
     });
 
+    // on typing text
+    const btn_post_text = document.querySelector('#btn_post_text');
+    btn_post_text.disabled = true;
+    const post_text = document.querySelector('#post_text');
+    post_text.oninput = () => {
+      if (post_text.value.length > 0){
+        btn_post_text.disabled = false;
+      } else {
+        btn_post_text.disabled = true;
+      }
+    };
+
     // when posted
     channel_socket.on('post list', post_text => {
+
       posts_dict1 = JSON.parse(post_text);
       for(post_dict in posts_dict1){
         if(posts_dict1[post_dict]['data'] === datenow()){
@@ -91,18 +115,26 @@ Online Channels Connect
         } else {
           date_now = false;
         }
-        document.querySelector('#post_list').innerHTML += post_template({'post_dict' : posts_dict1[post_dict], 'date_now' : date_now})
+        post_list.innerHTML += post_template({'post_dict' : posts_dict1[post_dict], 'date_now' : date_now})
 
       }
       delete_post();
+
+
+      if(post_list.children.length > Number("{{max_posts}}")){
+        post_list.children[0].remove();
+      }
+
+      post_list.scrollTop = post_list.scrollHeight - post_list.clientHeight;
     });
 
     // when deleted
     channel_socket.on('post delete', text => {
       current_post = JSON.parse(text);
       // document.querySelectorAll("data-post_index=current_post['post_index']").remove()
-      div = document.querySelectorAll("[data-post_index=\"" + current_post['post_index'] + "\"]");
-      div.item(0).remove()
+      document.querySelector('#post_index_' + current_post['post_index']).remove()
+      // div = document.querySelectorAll("[data-post_index=\"" + current_post['post_index'] + "\"]");
+      // div.item(0).remove()
     });
 
     // delete button function
@@ -144,10 +176,5 @@ Online Channels Connect
 
   });
 </script>
-<script>
-window.onbeforeunload = function (e) {
-// Your logic to prepare for 'Stay on this Page' goes here
-    // return "Please click 'Stay on this Page' and we will give you candy";
-};
-</script>
+
 {% endblock %}
