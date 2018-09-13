@@ -26,42 +26,41 @@ Online Channels Connect
   </div>
 </div>
 <div class="container cont">
-    <div class="d-flex justify-content-center flex-wrap bg-light">
-      <div>
-        <div id="allchannels_0">
-          <h5>No channels available</h5>
-        </div>
+  <div id="allchannels_0">
+    <p>No channels available</p>
+  </div>
+  <div class="d-flex justify-content-center flex-wrap bg-light">
+    <div class="card dallchannels_1" style="width:300px">
+      <div class="card-header">
+        <h5>All Channels</h5>
       </div>
-      <div class="card" style="width:300px">
-        <div class="card-header">
-          <h5>All Channels</h5>
-        </div>
-        <div class="card-body" id="allchannels_1">
-          <span></span>
-          <ul>
-          </ul>
-        </div>
+      <div class="card-body" id="allchannels_1">
+        <span></span>
+        <ul>
+        </ul>
       </div>
-      <div class="card" style="width:300px">
-        <div class="card-header">
-          <h5>Joined channels</h5>
-        </div>
-        <div class="card-body"  id="userchannels">
-          <span></span>
-          <ul>
-          </ul>
-        </div>
+    </div>
+    <div class="card dallchannels_1" style="width:300px">
+      <div class="card-header">
+        <h5>Joined channels</h5>
       </div>
-      <div class="card" style="width:300px">
-        <div class="card-header">
-          <h5>Owned channels</h5>
-        </div>
-        <div class="card-body"  id="ownerchannels">
-          <span></span>
-          <ul>
-          </ul>
-        </div>
+      <div class="card-body"  id="userchannels">
+        <span></span>
+        <ul>
+        </ul>
       </div>
+    </div>
+    <div class="card dallchannels_1" style="width:300px">
+      <div class="card-header">
+        <h5>Owned channels</h5>
+      </div>
+      <div class="card-body"  id="ownerchannels">
+        <span></span>
+        <ul>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 <span id="test"></span>
 
@@ -87,13 +86,15 @@ Online Channels Connect
 
 
     // Channel dict
-    const channels = {{channels_dict|safe }}
+    channels = {{channels_dict|safe }}
     const user = {{user_dict|safe}}
 
     // list channels
-    if(channels){
+    if(Object.keys(channels).length > 0){
       document.querySelector('#allchannels_0').style.display = "none";
-      document.querySelector('#allchannels_1').style.display = "block";
+      document.querySelectorAll('.dallchannels_1').forEach(event => {
+        event.style.display = "flex";
+      });
 
       for(var channel in channels){
         if(user['channels_owner'].indexOf(channel) > -1){
@@ -122,8 +123,10 @@ Online Channels Connect
       });
 
     } else {
-      document.querySelector('#allchannels_0').style.display = "block";
-      document.querySelector('#allchannels_1').style.display = "none";
+      document.querySelector('#allchannels_0').style.display = "flex";
+      document.querySelectorAll('.dallchannels_1').forEach(event => {
+        event.style.display = "none";
+      });
     }
 
 
