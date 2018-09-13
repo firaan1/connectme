@@ -32,3 +32,9 @@ h2 {
     margin-right: 5px;
     margin-left:15%;
   }
+.dchannel{
+  font-size: 10px;
+  width: 50px;
+  position: absolute;
+  right: 10px;
+}

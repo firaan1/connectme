@@ -27,8 +27,8 @@ channels_dict = {}
 
 max_posts = 100
 
-users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": ["c1"], "channels_owner": ["c1"]}, 'b': {'password': '92eb5ffee6ae2fec3ad71c777531578f', 'channels_user': ["c1"], 'channels_owner': []}})
-channels_dict.update({"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "date" : "date", "time" : "time", "index" : 0}}}})
+# users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": ["c1"], "channels_owner": ["c1"]}, 'b': {'password': '92eb5ffee6ae2fec3ad71c777531578f', 'channels_user': ["c1"], 'channels_owner': []}})
+# channels_dict.update({"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "date" : "date", "time" : "time", "index" : 0}}}})
 
 # taken from flask webpage decorators
 def login_required(f):
