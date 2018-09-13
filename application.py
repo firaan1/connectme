@@ -92,6 +92,10 @@ def before_request():
 
 @app.route("/")
 def index():
+    try:
+        session['logged_in']
+    except:
+        session['logged_in'] = False
     return render_template('index.html', users_dict = json.dumps(users_dict), sessionid = session['logged_in'], channels_dict = channels_dict)
 
 @app.route("/channels", methods = ["GET", "POST"])
