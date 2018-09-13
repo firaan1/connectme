@@ -5,13 +5,14 @@
 {% endblock %}
 
 {% block body %}
+  <div class="container cont">
     <h1>Error</h1>
     {{ message }}
-
+  </div>
 <script type="text/javascript">
 
   localStorage.removeItem('last_channel');
-  
+
   document.addEventListener('DOMContentLoaded', () => {
 
   // check session logged in
