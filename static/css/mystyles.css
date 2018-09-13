@@ -2,7 +2,11 @@ h2 {
   color:yellow;
 }
 
-.scrolltable { margin-top: 20px; height: 700px; overflow: auto; }
+.scrolltable {
+  margin-top: 20px;
+  height: 400px;
+  overflow: auto;
+}
 
 .header{
     background-color:#343a40;
