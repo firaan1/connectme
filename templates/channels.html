@@ -7,7 +7,7 @@ Online Channels Connect
 {% block body %}
 <div class="container cont">
   <div class="row">
-    <div class="col-md-4 offset-md-4">
+    <div class="col">
         <div class="card text-center card  bg-default mb-3">
           <div class="card-header">
             Create Your Channel
@@ -25,30 +25,39 @@ Online Channels Connect
       <span id="achannel_uniq"></span>
   </div>
 </div>
-<div class="container">
-    <div class="row">
-      <div class="col-sm-1 well">
+<div class="container cont">
+    <div class="d-flex justify-content-center flex-wrap bg-light">
+      <div>
         <div id="allchannels_0">
           <h5>No channels available</h5>
         </div>
       </div>
-      <div class="col-sm-4">
-        <div class="card card-body bg-light" id="allchannels_1">
+      <div class="card" style="width:300px">
+        <div class="card-header">
           <h5>All Channels</h5>
+        </div>
+        <div class="card-body" id="allchannels_1">
+          <span></span>
           <ul>
           </ul>
         </div>
       </div>
-      <div class="col-sm-4">
-        <div class="card card-body bg-light"  id="userchannels">
+      <div class="card" style="width:300px">
+        <div class="card-header">
           <h5>Joined channels</h5>
+        </div>
+        <div class="card-body"  id="userchannels">
+          <span></span>
           <ul>
           </ul>
         </div>
       </div>
-      <div class="col-sm-3">
-        <div class="card card-body bg-light"  id="ownerchannels">
+      <div class="card" style="width:300px">
+        <div class="card-header">
           <h5>Owned channels</h5>
+        </div>
+        <div class="card-body"  id="ownerchannels">
+          <span></span>
           <ul>
           </ul>
         </div>
