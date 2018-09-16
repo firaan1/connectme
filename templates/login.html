@@ -5,13 +5,13 @@
 
 {% block body %}
 <div class="container cont">
-<h3>User Login</h3>
+<!-- <h3 style="text-align:center">User Login</h3> -->
 <form action="{{ url_for('login')}}" method="post">
 	<div class="row">
-    <div class="col">
+    <div class="col col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-sm-8 offset-sm-2">
         <div class="card text-center card  bg-default mb-3">
           <div class="card-header">
-            LOGIN
+            Sign In
           </div>
           <div class="card-body">
                <input id="login_username" type="text" name="username" class="form-control input-sm chat-input" placeholder="Username" autofocus/>
@@ -19,11 +19,9 @@
             <input id="login_password" type="password" name="password" class="form-control input-sm chat-input" placeholder="Password" />
           </div>
           <div class="card-footer text-muted">
-            <button id="btn_login1" class="btn btn-secondary" disabled>LOGIN</button>
+            <button id="btn_login1" class="btn btn-secondary" disabled><i class="fas fa-sign-in-alt"></i> Sign In</button>
+						<hr><a href="{{ url_for('register')}}"><i class="fas fa-user-plus"></i> Sign Up</a>
           </div>
-					<div class="form-group">
-						<a href="{{ url_for('register')}}">Signup</a>
-					</div>
         </div>
   		</div>
 		</div>

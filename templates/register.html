@@ -5,10 +5,10 @@
 
 {% block body %}
 <div class="container cont">
-<h3>User Signup</h3>
+<!-- <h3>User Signup</h3> -->
 <form action="{{ url_for('register')}}" method="post">
 	<div class="row">
-    <div class="col">
+    <div class="col col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-sm-8 offset-sm-2">
         <div class="card text-center card  bg-default mb-3">
           <div class="card-header">
             Sign Up
@@ -21,30 +21,14 @@
               <input id="in_password2" type="password" name="password_retype" class="form-control input-sm chat-input" placeholder="Re-enter Password" />
           </div>
           <div class="card-footer text-muted">
-            <button class="btn btn-secondary" id="btn_signup" disabled>Sign Up</button>
+            <button class="btn btn-secondary" id="btn_signup" disabled><i class="fas fa-user-plus"></i> Sign Up</button>
+						<hr><a href="{{ url_for('login')}}"><i class="fas fa-sign-in-alt"></i> Sign In</a>
           </div>
         </div>
   		</div>
 		</div>
 </form>
 </div>
-    <!-- <h1>Register User</h1>
-    <form action="{{ url_for('register')}}" method="post">
-      <div class="form-group">
-        <input class="form-control" type="text" name="username" placeholder="User Name" autofocus>
-      </div>
-      <div class="form-group">
-        <input class="form-control" type="password" name="password" placeholder="Password">
-      </div>
-      <div class="form-group">
-        <input class="form-control" type="password" name="password_retype" placeholder="Re-enter Password">
-      </div>
-      <br/>
-      <div class="form-group">
-        <button class="btn btn-primary">Register</button>
-      </div>
-    </form> -->
-
 
     <script type="text/javascript">
 

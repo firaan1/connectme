@@ -26,6 +26,34 @@ Online Channels Connect
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', () => {
 
+    // saving session credentials
+    if(!localStorage.getItem('session_logged_in')){
+      if("{{session['logged_in']}}" != "False"){
+        sessionvar = {"user" : "{{session['logged_in']}}", "password" : "{{session['logged_pass']}}"}
+        localStorage.setItem('session_logged_in', JSON.stringify(sessionvar))
+      }
+    } else {
+      const session_logged_in = JSON.parse(localStorage.getItem('session_logged_in'));
+      if("{{session['logged_in']}}" != "False"){
+        if("{{session['logged_in']}}" === session_logged_in['user'] && "{{session['logged_pass']}}" === session_logged_in['password']){
+        } else {
+          sessionvar = {"user" : "{{session['logged_in']}}", "password" : "{{session['logged_pass']}}"}
+          localStorage.setItem('session_logged_in', JSON.stringify(sessionvar))
+        }
+      } else {
+        // login user from local session
+        const request7 = new XMLHttpRequest();
+        request7.open('POST', '/login');
+        request7.onload = () => {
+          window.location.href = window.location
+        }
+        const data = new FormData();
+        data.append("session_logged_in", JSON.stringify(session_logged_in));
+        request7.send(data);
+      }
+    }
+
+
   // redirect to channel page
   if(localStorage.getItem('last_channel')){
     window.location = localStorage.getItem('last_channel');

@@ -7,7 +7,7 @@ Online Channels Connect
 {% block body %}
 <div class="container cont">
   <div class="row">
-    <div class="col">
+    <div class="col col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-sm-8 offset-sm-2">
         <div class="card text-center card  bg-default mb-3">
           <div class="card-header">
             Create Your Channel
@@ -21,8 +21,8 @@ Online Channels Connect
             <button type="button" id="btn_achannel" class="btn btn-secondary">Create</button>
           </div>
         </div>
+        <span id="achannel_uniq"></span>
       </div>
-      <span id="achannel_uniq"></span>
   </div>
 </div>
 <div class="container cont">
@@ -35,7 +35,6 @@ Online Channels Connect
         <h5>All Channels</h5>
       </div>
       <div class="card-body" id="allchannels_1">
-        <span></span>
         <ul>
         </ul>
       </div>
@@ -138,7 +137,7 @@ Online Channels Connect
     btn_achannel.disabled = true;
     document.querySelector('#achannel').onkeyup = () => {
       const achannel = document.querySelector('#achannel').value;
-      if (achannel.length > 0) {
+      if (achannel.length > 0 && achannel.length <= 21 && achannel.trim().length > 0) {
 
         // removing spl characters
         // var regex = /^\w+$/;
@@ -164,7 +163,13 @@ Online Channels Connect
         };
       } else {
         btn_achannel.disabled = true;
-        achannel_uniq.innerHTML = "";
+        if(achannel.length > 21){
+          achannel_uniq.innerHTML = "Channel name restricted to 21 characters";
+        } else if (achannel.trim().length == 0) {
+          achannel_uniq.innerHTML = "Channel name contains only blank spaces"
+        } else {
+          achannel_uniq.innerHTML = "";
+        }
       }
     };
 

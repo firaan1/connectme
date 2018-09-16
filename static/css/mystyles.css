@@ -1,10 +1,15 @@
+body, html {
+  height: 100%;
+}
+
 h2 {
   color:yellow;
 }
 
 .scrolltable {
   margin-top: 20px;
-  height: 400px;
+  height: 55vh;
+  /* height: 350px; */
   overflow: auto;
 }
 
@@ -19,7 +24,7 @@ h2 {
     float:left;
     width:15%;
     text-align:center;
-    min-height: 875px;
+    min-height: 100vh;
     height:auto!important;
     background-color: #a6a6a6;
 
@@ -40,8 +45,10 @@ h2 {
   font-size: 10px;
   width: 50px;
   position: absolute;
-  right: 10px;
+  right: 20px;
 }
 .userclass{
-  color: white;
+  color: yellow;
+  background-color: #343a40;
+  padding: 15px;
 }

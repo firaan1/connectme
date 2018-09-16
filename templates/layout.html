@@ -29,11 +29,11 @@
       <div style="overflow:auto">
         <div class="menu">
 
-          <button type="button" class="btn btn-dark btnloc" id="btn_home" data-urlfor=""> Home</button>
-          <button type="button" class="btn btn-dark btnloc" id="btn_channels" data-urlfor="/channels">Channels</button>
-          <button type="button" class="btn btn-dark loggedout btnloc" id="btn_login" data-urlfor="/login">Login</button>
-          <button type="button" class="btn btn-dark loggedin btnloc" id="btn_logout" data-urlfor="/logout">Logout</button>
-          <button type="button" class="btn btn-dark loggedout btnloc" id="btn_register" data-urlfor="/register">Sign Up</button>
+          <button type="button" class="btn btn-dark btnloc" id="btn_home" data-urlfor=""><i class="fas fa-home"></i> Home</button>
+          <button type="button" class="btn btn-dark btnloc" id="btn_channels" data-urlfor="/channels"><i class="fas fa-th"></i> Channels</button>
+          <button type="button" class="btn btn-dark loggedout btnloc" id="btn_login" data-urlfor="/login"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+          <button type="button" class="btn btn-dark loggedin btnloc" id="btn_logout" data-urlfor="/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+          <button type="button" class="btn btn-dark loggedout btnloc" id="btn_register" data-urlfor="/register"><i class="fas fa-user-plus"></i> Sign Up</button>
 
           <hr>
           <div class="userclass">
@@ -54,37 +54,13 @@
       {% endblock %}
     </div>
     <script>
-
     // removing session_logged_in from cache
-    if("{{session.logged_in}}" == "False"){
-      localStorage.removeItem('session_logged_in');
+    if ("{{g.initvar}}" == "True"){
+      localStorage.clear()
+      // location.href = location.protocol + '//' + document.domain + ':' + location.port + "/logout"
     }
-
-    // saving session credentials
-    if(!localStorage.getItem('session_logged_in')){
-      if("{{session['logged_in']}}" != "False"){
-        sessionvar = {"user" : "{{session['logged_in']}}", "password" : "{{session['logged_pass']}}"}
-        localStorage.setItem('session_logged_in', JSON.stringify(sessionvar))
-      }
-    } else {
-      const session_logged_in = JSON.parse(localStorage.getItem('session_logged_in'));
-      if("{{session['logged_in']}}" != "False"){
-        if("{{session['logged_in']}}" === session_logged_in['user'] && "{{session['logged_pass']}}" === session_logged_in['password']){
-        } else {
-          sessionvar = {"user" : "{{session['logged_in']}}", "password" : "{{session['logged_pass']}}"}
-          localStorage.setItem('session_logged_in', JSON.stringify(sessionvar))
-        }
-      } else {
-        // login user from local session
-        const request7 = new XMLHttpRequest();
-        request7.open('POST', '/login');
-        request7.onload = () => {
-          window.location.href = window.location
-        }
-        const data = new FormData();
-        data.append("session_logged_in", JSON.stringify(session_logged_in));
-        request7.send(data);
-      }
+    if("{{session.logged_in}}" == "False"){
+      localStorage.clear()
     }
 
     function ButtonDisplay(sesssionloggedin) {
@@ -108,7 +84,8 @@
         button.onclick = () => {
           localStorage.removeItem('last_channel');
           if(button.dataset.urlfor === "/logout"){
-            localStorage.removeItem('session_logged_in')
+            // localStorage.removeItem('session_logged_in')
+            localStorage.clear()
           }
           location.href = location.protocol + '//' + document.domain + ':' + location.port + button.dataset.urlfor
         }
