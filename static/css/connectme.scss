@@ -1,0 +1,108 @@
+$hcolor: salmon;
+$bgcolor: white;
+$bcolor: darkslategrey;
+body, html {
+  height: 100%;
+}
+%buttons {
+  background-color: $bgcolor;
+  border: solid;
+  border-color: $bcolor;
+  color: $hcolor;
+}
+%borders {
+  border: solid;
+  border-color: $bcolor;
+  border-radius: 30px;
+}
+
+h2 {
+  color:$hcolor;
+}
+
+.scrolltable {
+  margin-top: 20px;
+  height: 55vh;
+  /* height: 350px; */
+  overflow: auto;
+}
+
+.header{
+    background-color: black;
+    padding:15px;
+    text-align:center;
+    font-family: serif;
+    margin-bottom: 10px;
+    display: flex;
+  }
+
+
+.contents {
+  overflow: auto;
+  background-image: linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0) ), url('/static/images/connect.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  .menu {
+      float:left;
+      width:15%;
+      text-align:center;
+      min-height: 100vh;
+      button {
+          padding:8px;
+          margin-top:7px;
+          display:block;
+          width:100%;
+          color: $hcolor;
+        }
+    }
+  .bodydiv {
+    float: right;
+    width: 85%;
+    min-height: 100vh;
+  }
+}
+.cont{
+    #homediv{
+      @extend %borders;
+      background-color: white;
+      color: $bcolor;
+      margin: 10px;
+      padding: 10px;
+    }
+    #ctitle {
+      text-align: center;
+    }
+}
+.card {
+  @extend %borders;
+}
+.dchannel{
+  font-size: 10px;
+  width: 50px;
+  position: absolute;
+  right: 20px;
+}
+#btn_user{
+  opacity: 100%;
+}
+.userclass{
+  color: $hcolor;
+  background-color: $bgcolor;
+  padding: 15px;
+}
+.btn.btn-dark, .btn.btn-success{
+  @extend %buttons;
+}
+.dallchannels_1{
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+#allchannels_list {
+  a {
+  color:$bcolor;
+  }
+  button {
+    background-color:$hcolor;
+  }
+}

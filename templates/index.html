@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-Online Channels Connect
+connectME: Home
 {% endblock %}
 
 {% block body %}
@@ -12,8 +12,9 @@ Online Channels Connect
 
 <div class="container cont">
   <div>
-    <img src="{{ url_for('static', filename='img1.jpg')}}" height="300" width="550">
+    <img id="img1" src="{{ url_for('static', filename='images/img1.jpg')}}" height="300" width="550">
   </div>
+  <div id="homediv">
   <h3>Connecting Messenger</h3>
   <ul>
     <li>Any user Should be able to create a new channel. and selecting one should allow the user to view the channel.</li>
@@ -21,6 +22,7 @@ Online Channels Connect
     <li>Once in a channel, user user should able to send text messages to others the channel. When a user send a message their display namr and the timestamp of the message should be associated with the message- </li>
     <li>All user in the channel should then see the new message appear on the channel page.</li>
   </ul>
+  <div>
 </div>
 
 <script type="text/javascript">

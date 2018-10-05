@@ -1,14 +1,14 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-Online Channels Connect
+connectME: Channels
 {% endblock %}
 
 {% block body %}
 <div class="container cont">
   <div class="row">
     <div class="col col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-sm-8 offset-sm-2">
-        <div class="card text-center card  bg-default mb-3">
+        <div class="card text-center card mb-3">
           <div class="card-header">
             Create Your Channel
           </div>
@@ -29,10 +29,10 @@ Online Channels Connect
   <div id="allchannels_0">
     <p>No channels available</p>
   </div>
-  <div class="d-flex justify-content-center flex-wrap bg-light">
+  <div id="allchannels_list" class="d-flex justify-content-center flex-wrap">
     <div class="card dallchannels_1" style="width:300px">
-      <div class="card-header">
-        <h5>All Channels</h5>
+      <div class="card-header text-center">
+        All Channels
       </div>
       <div class="card-body" id="allchannels_1">
         <ul>
@@ -40,8 +40,8 @@ Online Channels Connect
       </div>
     </div>
     <div class="card dallchannels_1" style="width:300px">
-      <div class="card-header">
-        <h5>Joined channels</h5>
+      <div class="card-header text-center">
+        Joined channel
       </div>
       <div class="card-body"  id="userchannels">
         <span></span>
@@ -50,8 +50,8 @@ Online Channels Connect
       </div>
     </div>
     <div class="card dallchannels_1" style="width:300px">
-      <div class="card-header">
-        <h5>Owned channels</h5>
+      <div class="card-header text-center">
+        Owned channel
       </div>
       <div class="card-body"  id="ownerchannels">
         <span></span>
@@ -67,7 +67,7 @@ Online Channels Connect
   <li>
     {% raw -%}
     <a href="/channels/{{channel}}">{{channel}}</a>
-    <button type="button" class="btn btn-dark pull-right dchannel c{{btnvar}}" data-btnvar="{{btnvar}}">{{btnvar}}</button>
+    <button type="button" class="btn btn-danger pull-right dchannel c{{btnvar}}" data-btnvar="{{btnvar}}">{{btnvar}}</button>
     {%- endraw %}
   </li>
 </script>
