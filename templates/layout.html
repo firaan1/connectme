@@ -35,7 +35,6 @@
 
           <hr>
            <button type="button" class="btn btn-success" id="btn_user" disabled style="opacity:100">{% if session.logged_in %}<i class="fas fa-user"></i> {{session.logged_in}}{% else %}<i class="far fa-user"></i> Guest{% endif %}</button>
-
         </div>
 
 
@@ -54,6 +53,7 @@
     if("{{session.logged_in}}" == "False"){
       localStorage.clear()
     }
+
 
     </script>
     <style>

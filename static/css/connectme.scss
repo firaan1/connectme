@@ -15,7 +15,12 @@ body, html {
   border-color: $bcolor;
   border-radius: 30px;
 }
-
+.dchannel{
+  font-size: 10px;
+  width: 50px;
+  position: absolute;
+  right: 20px;
+}
 h2 {
   color:$hcolor;
 }
@@ -76,12 +81,7 @@ h2 {
 .card {
   @extend %borders;
 }
-.dchannel{
-  font-size: 10px;
-  width: 50px;
-  position: absolute;
-  right: 20px;
-}
+
 #btn_user{
   opacity: 100%;
 }
@@ -105,4 +105,13 @@ h2 {
   button {
     background-color:$hcolor;
   }
+}
+
+#nochannelid {
+  width: 100%;
+  text-align: center;
+}
+
+.infotext {
+  font-size: 12px;
 }

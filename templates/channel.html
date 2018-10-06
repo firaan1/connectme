@@ -8,10 +8,11 @@ connectME: current channel
 <div class="container cont">
     <div class="form-group">
       <h2 id="ctitle">channel: {{channel}}</h2>
-    </div>
-    <div class="form-group" style="float:right;">
       <button id="dchannel" type="button" class="btn btn-dark btn-sm">Delete Channel</button>
     </div>
+    <!-- <div class="form-group" style="float:right;">
+      <button id="dchannel" type="button" class="btn btn-dark btn-sm">Delete Channel</button>
+    </div> -->
         <div id="post_list" class="scrolltable">
         </div>
         <div class="row">
@@ -29,9 +30,9 @@ connectME: current channel
         <div class="channelpost row message-bubble" data-post_index="{{post_dict.index}}" data-post_user="{{post_dict.user}}">
           <span class="post_user col-sm-12"><strong>User Name: {{post_dict.user}}</strong></span></br>
           <span class="post_message col-sm-6"><strong>Message: </strong>{{post_dict.message}}</span>
-          <span class="post_date col-sm-2">{{post_dict.date}}</span>
-          <span class="post_time col-sm-2">{{post_dict.time}}</span>
-          <button type="button" class="btn btn-dark dpost" data-btnvar="">delete</button>
+          <span class="infotext post_date col-sm-2">{{post_dict.date}}</span>
+          <span class="infotext post_time col-sm-2">{{post_dict.time}}</span>
+          <button type="button" class="btn btn-dark btn-sm dpost" data-btnvar="">delete</button>
         </div>
     </div>
     {%- endraw %}

@@ -27,7 +27,7 @@ connectME: Channels
 </div>
 <div class="container cont">
   <div id="allchannels_0">
-    <p>No channels available</p>
+    <p id="nochannelid">No channels available</p>
   </div>
   <div id="allchannels_list" class="d-flex justify-content-center flex-wrap">
     <div class="card dallchannels_1" style="width:300px">
@@ -67,7 +67,7 @@ connectME: Channels
   <li>
     {% raw -%}
     <a href="/channels/{{channel}}">{{channel}}</a>
-    <button type="button" class="btn btn-danger pull-right dchannel c{{btnvar}}" data-btnvar="{{btnvar}}">{{btnvar}}</button>
+    <button type="button" class="btn btn-danger btn-sm pull-right dchannel c{{btnvar}}" data-btnvar="{{btnvar}}">{{btnvar}}</button>
     {%- endraw %}
   </li>
 </script>
@@ -179,7 +179,7 @@ connectME: Channels
     btn_achannel.onclick = () => {
 
       // add to channels_dict
-      const channel = document.querySelector('#achannel').value
+      const channel = document.querySelector('#achannel').value.trim()
       const owner = "{{session['logged_in']}}"
       const channel_info = {
         [channel] : {
