@@ -28,9 +28,6 @@ channels_dict = {}
 max_posts = 100
 
 app_init = 1
-# users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": [], "channels_owner": []}, 'b': {'password': '92eb5ffee6ae2fec3ad71c777531578f', 'channels_user': [], 'channels_owner': []}})
-# users_dict.update({"a": {"password": "0cc175b9c0f1b6a831c399e269772661", "channels_user": ["c1"], "channels_owner": ["c1"]}, 'b': {'password': '92eb5ffee6ae2fec3ad71c777531578f', 'channels_user': ["c1"], 'channels_owner': []}})
-# channels_dict.update({"c1": {"owner" : "a", "channel_messages" : {0 : {"user" : "a", "message" : "xx", "date" : "date", "time" : "time", "index" : 0}}}})
 
 # taken from flask webpage decorators
 def login_required(f):
@@ -58,28 +55,6 @@ def before_request():
         g.initvar = True
     else:
         g.initvar = False
-
-# @app.before_first_request
-# def before_first_request():
-#     try:
-#         if users_dict and session['logged_in']:
-#             if session['logged_in'] not in list(users_dict.keys()):
-#                 session['logged_in'] = False
-#                 session['logged_pass'] = False
-#     except:
-#         session['logged_in'] = False
-#         session['logged_pass'] = False
-#
-# @app.before_request
-# def before_request():
-#     try:
-#         if users_dict and session['logged_in']:
-#             if session['logged_in'] not in list(users_dict.keys()):
-#                 session['logged_in'] = False
-#                 session['logged_pass'] = False
-#     except:
-#         session['logged_in'] = False
-#         session['logged_pass'] = False
 
 @app.route("/")
 def index():

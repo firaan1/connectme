@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-connectME: Channels
+connectMe: Channels
 {% endblock %}
 
 {% block body %}
@@ -140,7 +140,6 @@ connectME: Channels
       if (achannel.length > 0 && achannel.length <= 21 && achannel.trim().length > 0) {
 
         // removing spl characters
-        // var regex = /^\w+$/;
         var regex = /^[A-Za-z0-9_ ]+$/;
         if (achannel.match(regex)){
           achannel_uniq.innerHTML = ""
@@ -190,7 +189,6 @@ connectME: Channels
       request.open('POST', '/addchannel');
       request.onload = () => {
         window.location.href = window.location;
-        // document.querySelector('#test').innerHTML = request.responseText;
       }
       const data = new FormData();
       data.append("channel_info", JSON.stringify(channel_info));

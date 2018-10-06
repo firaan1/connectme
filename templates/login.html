@@ -1,12 +1,11 @@
 {% extends "layout.html" %}
 
 {% block title %}
-connectME: User Login
+connectMe: User Login
 {% endblock %}
 
 {% block body %}
 <div class="container cont">
-<!-- <h3 style="text-align:center">User Login</h3> -->
 <form action="{{ url_for('login')}}" method="post">
 	<div class="row">
     <div class="col col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-sm-8 offset-sm-2">
@@ -27,20 +26,6 @@ connectME: User Login
   		</div>
 		</div>
 </form>
-<!-- <form action="{{ url_for('login')}}" method="post">
-	<div class="form-group">
-		<input class="form-control" type="text" name="username" placeholder="User Name" autofocus>
-		<input class="form-control" type="password" name="password" placeholder="Password">
-	</div>
-	<br/>
-	<div class="form-group">
-		<a href="{{ url_for('register')}}">Register</a>
-	</div>
-	<br/>
-	<div class="form-group">
-		<button class="btn btn-primary">Login</button>
-	</div>
-</form> -->
 </div>
 <script type="text/javascript">
 

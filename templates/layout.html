@@ -3,7 +3,6 @@
     <head>
       <title>{% block title %}
       {% endblock %}</title>
-      <!-- <link rel="stylesheet" href="{{url_for('static', filename='project2.css')}}"> -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
@@ -15,7 +14,6 @@
       <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
       <link rel="stylesheet" href="{{ url_for('static', filename='css/connectme.css') }}">
-      <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/mystyles.css') }}"> -->
     </head>
     <body>
       <!--Header Starts  -->
@@ -51,7 +49,6 @@
     // removing session_logged_in from cache
     if ("{{g.initvar}}" == "True"){
       localStorage.clear()
-      // location.href = location.protocol + '//' + document.domain + ':' + location.port + "/logout"
     }
     if("{{session.logged_in}}" == "False"){
       localStorage.clear()

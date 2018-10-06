@@ -47,4 +47,5 @@ connectme/
     ├── layout.html
     ├── login.html
     └── register.html
+    └── settings.html # contain settings inputs
 ```

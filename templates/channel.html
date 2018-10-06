@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-connectME: current channel
+connectMe: current channel
 {% endblock %}
 
 {% block body %}
@@ -10,7 +10,6 @@ connectME: current channel
       <h2 id="ctitle">channel: {{channel}}</h2>
       <button id="dchannel" type="button" class="btn btn-dark btn-sm">Delete Channel</button>
     </div>
-    <!-- <div class="form-group" style="float:right;">
       <button id="dchannel" type="button" class="btn btn-dark btn-sm">Delete Channel</button>
     </div> -->
         <div id="post_list" class="scrolltable">
@@ -135,10 +134,7 @@ connectME: current channel
     // when deleted
     channel_socket.on('post delete', text => {
       current_post = JSON.parse(text);
-      // document.querySelectorAll("data-post_index=current_post['post_index']").remove()
       document.querySelector('#post_index_' + current_post['post_index']).remove()
-      // div = document.querySelectorAll("[data-post_index=\"" + current_post['post_index'] + "\"]");
-      // div.item(0).remove()
     });
 
     // delete button function
