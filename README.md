@@ -3,7 +3,7 @@
 Web Programming with Python and JavaScript
 
 This application was developed using Python Flask, HTML and CSS/SCSS.
-This web page allows the user to register / login and connect with other users. Users can create their own channels or join available channels and chat with others instantly. Further the users can delete their chat messages and channel owners can delete their channels.
+This web page allows the user to register / login and connect with other users. Users can create their own channels or join available channels and chat with others instantly. Further the users can delete their chat messages and channel owners can delete their channels. Users can also change password and delete their accounts permanently.
 
 ## Download
 ``` bash
