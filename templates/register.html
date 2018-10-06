@@ -41,7 +41,7 @@ connectME: User Registration
       ButtonDisplay("{{session['logged_in']}}");
 
       document.onkeyup = () => {
-        if (document.querySelector('#in_username').value.length > 0 && document.querySelector('#in_password').value.length > 0){
+        if (document.querySelector('#in_username').value.length > 0 && document.querySelector('#in_password').value.length > 0 && (document.querySelector('#in_username').value.length == document.querySelector('#in_username').value.trim().length)){
           document.querySelector('#btn_signup').disabled = false;
         } else {
           document.querySelector('#btn_signup').disabled = true;

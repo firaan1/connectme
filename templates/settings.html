@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+
+{% block title %}
+connectME: Error
+{% endblock %}
+
+{% block body %}
+  <div class="container cont">
+    <h1>Settings</h1>
+    <hr>
+    {{message}}
+    <div class="form-group">
+      <select class="form-control" id="sselect" name="sselect">
+        <option value="" selected disabled>What would you like to do?</option>
+        <option value="change">Change Password</option>
+        <option value="delete">Delete Account</option>
+      </select>
+    </div>
+    <div id="changepassword">
+      <form method="POST">
+        <div class="form-group">
+          <input type="text" name="username0" class="form-control" value="{{session.logged_in}}" disabled/>
+          <input type="hidden" name="username" value="{{session.logged_in}}"/>
+        </div>
+        <div class="form-group">
+          <input id="in_password" type="password" name="password" class="form-control" placeholder="New Password" />
+        </div>
+        <div class="form-group">
+          <input id="in_password2" type="password" name="password_retype" class="form-control" placeholder="Re-enter New Password" />
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-dark">Submit</button>
+        </div>
+        <input type="hidden" name="todo" value="changepassword"/>
+      </form>
+    </div>
+    <br>
+    <div id="deleteaccount">
+      <form method="POST">
+        <div class="form-group">
+          <h4><b style="color:red">Are you sure?</b></h4>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-dark">Yes</button>
+          <a href="{{ url_for('settings' )}}" class="btn btn-dark">No</a>
+        </div>
+        <input type="hidden" name="username" value="{{session.logged_in}}"/>
+        <input type="hidden" name="todo" value="deleteaccount"/>
+      </form>
+    </div>
+  </div>
+<script type="text/javascript">
+
+  localStorage.removeItem('last_channel');
+
+  document.addEventListener('DOMContentLoaded', () => {
+
+  // check session logged in
+  ButtonDisplay("{{session['logged_in']}}");
+
+  // select
+  const changepassword = document.querySelector('#changepassword')
+  const deleteaccount = document.querySelector('#deleteaccount')
+  const sselect = document.querySelector('#sselect')
+  // init
+  changepassword.style.display = "none";
+  deleteaccount.style.display = "none";
+
+  // onselect
+  sselect.oninput = () => {
+    if(sselect.value == "change"){
+      changepassword.style.display = "block";
+      deleteaccount.style.display = "none";
+    } else if(sselect.value == "delete"){
+      changepassword.style.display = "none";
+      deleteaccount.style.display = "block";
+    }
+  }
+
+
+  });
+
+</script>
+
+{% endblock %}

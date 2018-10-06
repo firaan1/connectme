@@ -88,6 +88,45 @@ def index():
     except:
         session['logged_in'] = False
     return render_template('index.html', users_dict = json.dumps(users_dict), sessionid = session['logged_in'], channels_dict = channels_dict)
+@app.route("/settings", methods = ["GET","POST"])
+@login_required
+def settings():
+    if request.method == "POST":
+        global users_dict, channels_dict
+        todo = request.form.get('todo')
+        if todo == "changepassword":
+            username = request.form.get('username')
+            password = request.form.get('password')
+            password_retype = request.form.get('password_retype')
+            if not password == password_retype:
+                return render_template('error.html', message = "Check retyping password")
+            password_hash = hashlib.md5(password.encode('utf-8')).hexdigest()
+            try:
+                if users_dict[username]:
+                    users_dict[username]['password'] = password_hash
+                    return render_template('settings.html', message = "Password Changed Successfully")
+                else:
+                    return render_template('error.html', message = "User does not exist")
+            except:
+                return render_template('error.html', message = "User does not exist")
+        elif todo == "deleteaccount":
+            username = request.form.get('username')
+            try:
+                if users_dict[username]:
+                    tmp_channels_dict = json.loads(json.dumps(channels_dict))
+                    for c in channels_dict:
+                        if channels_dict[c]['owner'] == username:
+                            tmp_channels_dict.pop(c)
+                    channels_dict = tmp_channels_dict
+                    users_dict.pop(username)
+                    session['logged_in'] = False
+                    session['logged_pass'] = False
+                    return redirect(url_for('index'))
+                else:
+                    return render_template('error.html', message = "User does not exist")
+            except:
+                return render_template('error.html', message = "User does not exist")
+    return render_template('settings.html')
 
 @app.route("/channels", methods = ["GET", "POST"])
 @login_required
