@@ -19,6 +19,10 @@ connectMe: User Registration
               <input id="in_password" type="password" name="password" class="form-control input-sm chat-input" placeholder="Password" />
             </br>
               <input id="in_password2" type="password" name="password_retype" class="form-control input-sm chat-input" placeholder="Re-enter Password" />
+						</br>
+							<input id="in_question" type="text" name="question" class="form-control" placeholder="Please enter a security question"/>
+						</br>
+							<input id="in_answer" type="text" name="answer" class="form-control" placeholder="Answer to your security question"/>
           </div>
           <div class="card-footer text-muted">
             <button class="btn btn-secondary" id="btn_signup" disabled><i class="fas fa-user-plus"></i> Sign Up</button>
@@ -40,7 +44,7 @@ connectMe: User Registration
       ButtonDisplay("{{session['logged_in']}}");
 
       document.onkeyup = () => {
-        if (document.querySelector('#in_username').value.length > 0 && document.querySelector('#in_password').value.length > 0 && (document.querySelector('#in_username').value.length == document.querySelector('#in_username').value.trim().length)){
+        if (document.querySelector('#in_username').value.length > 0 && document.querySelector('#in_password').value.length > 0 && (document.querySelector('#in_username').value.length == document.querySelector('#in_username').value.trim().length) && document.querySelector('#in_question').value.length > 0 && document.querySelector('#in_answer').value.length > 0){
           document.querySelector('#btn_signup').disabled = false;
         } else {
           document.querySelector('#btn_signup').disabled = true;

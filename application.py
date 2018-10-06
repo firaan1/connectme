@@ -63,6 +63,42 @@ def index():
     except:
         session['logged_in'] = False
     return render_template('index.html', users_dict = json.dumps(users_dict), sessionid = session['logged_in'], channels_dict = channels_dict)
+
+@app.route("/forgotpassword", methods = ["GET", "POST"])
+@logout_required
+def forgotpassword():
+    if request.method == "POST":
+        todo = request.form.get('todo')
+        if todo == "username":
+            username = request.form.get('username')
+            try:
+                if users_dict[username]:
+                    question = users_dict[username]['question'] + "?"
+                    return render_template('forgotpassword.html', message = username, question = question)
+                else:
+                    return render_template('error.html', message = "User does not exist")
+            except:
+                return render_template('error.html', message = "User does not exist")
+        elif todo == "changepassword":
+            username = request.form.get('username')
+            password = request.form.get('password')
+            password_retype = request.form.get('password_retype')
+            answer = request.form.get('answer')
+            if not password == password_retype:
+                return render_template('error.html', message = "Check retyping password")
+            password_hash = hashlib.md5(password.encode('utf-8')).hexdigest()
+            try:
+                if users_dict[username]:
+                    if users_dict[username]['answer'] != answer:
+                        return render_template('error.html', message = "Incorrect answer")
+                    users_dict[username]['password'] = password_hash
+                    return render_template('forgotpassword.html', message = "Password Changed Successfully")
+                else:
+                    return render_template('error.html', message = "User does not exist")
+            except:
+                return render_template('error.html', message = "User does not exist")
+    return render_template('forgotpassword.html')
+
 @app.route("/settings", methods = ["GET","POST"])
 @login_required
 def settings():
@@ -216,6 +252,8 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
         password_retype = request.form.get('password_retype')
+        question = request.form.get('question')
+        answer = request.form.get('answer')
         if not password == password_retype:
             return render_template('error.html', message = "Check retyping password")
         password_hash = hashlib.md5(password.encode('utf-8')).hexdigest()
@@ -228,7 +266,9 @@ def register():
         users_dict[username] = {
         'password' : password_hash,
         'channels_user' : [],
-        'channels_owner' : []
+        'channels_owner' : [],
+        'question' : question,
+        'answer' : answer
         }
         session['logged_in'] = username
         session['logged_pass'] = password_hash
