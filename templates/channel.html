@@ -10,13 +10,14 @@ connectMe: current channel
       <h2 id="ctitle">channel: {{channel}}</h2>
       <button id="dchannel" type="button" class="btn btn-dark btn-sm">Delete Channel</button>
     </div>
-      <button id="dchannel" type="button" class="btn btn-dark btn-sm">Delete Channel</button>
-    </div> -->
+      <!-- <button id="dchannel" type="button" class="btn btn-dark btn-sm">Delete Channel</button> -->
+    </div>
         <div id="post_list" class="scrolltable">
         </div>
         <div class="row">
           <div class="form-group col-sm-6">
-            <input id="post_text" type="text" class="form-control" placeholder="Enter you post here" autofocus>
+            <input id="post_text" type="text" class="form-control" placeholder="Enter you post here" onkeydown="check(event)" autofocus>
+            <input id="key_post_text" type="hidden" value=""/>
           </div>
             <div class="col-sm-4">
               <button id="btn_post_text" type="button" class="btn btn-primary">Send</button>
@@ -38,6 +39,15 @@ connectMe: current channel
 </script>
 
 <script type="text/javascript">
+
+function check(evt)
+{
+var keycode = evt.keyCode;
+if(keycode == 13){
+  document.querySelector('#btn_post_text').click()
+} else {
+}
+}
 
   document.addEventListener('DOMContentLoaded', () => {
 
@@ -89,6 +99,7 @@ connectMe: current channel
         // clearing input
         document.querySelector('#post_text').value = "";
         document.querySelector('#post_text').focus();
+        document.querySelector('#btn_post_text').disabled = true;
 
       };
 
@@ -174,7 +185,10 @@ connectMe: current channel
       request.send(data);
     }
 
+
   });
+
+
 </script>
 
 {% endblock %}
