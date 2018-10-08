@@ -46,6 +46,14 @@ def logout_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def fakeuser_check(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session['logged_pass'] and session['logged_pass'] == "fakeuser" :
+            return render_template('error.html', message = "Please Sign In to access this feature!")
+        return f(*args, **kwargs)
+    return decorated_function
+
 @app.before_request
 def before_request():
     global app_init
@@ -60,9 +68,30 @@ def before_request():
 def index():
     try:
         session['logged_in']
+        if session['logged_in'] not in users_dict.keys():
+            session['logged_in'] = False
+            g.initvar = True
     except:
         session['logged_in'] = False
+        g.initvar = True
     return render_template('index.html', users_dict = json.dumps(users_dict), sessionid = session['logged_in'], channels_dict = channels_dict)
+
+@app.route("/peekin", methods = ["GET", "POST"])
+@logout_required
+def peekin():
+    if request.method == "POST":
+        username = request.form.get('username')
+        users_dict[username] = {
+        'password' : "fakeuser",
+        'channels_user' : [],
+        'channels_owner' : [],
+        'question' : "fakeuser",
+        'answer' : "fakeuser"
+        }
+        session['logged_in'] = username
+        session['logged_pass'] = "fakeuser"
+        return redirect(url_for('index'))
+    return render_template('peekin.html', users_dict = json.dumps(users_dict))
 
 @app.route("/forgotpassword", methods = ["GET", "POST"])
 @logout_required
@@ -101,6 +130,7 @@ def forgotpassword():
 
 @app.route("/settings", methods = ["GET","POST"])
 @login_required
+@fakeuser_check
 def settings():
     if request.method == "POST":
         global users_dict, channels_dict
@@ -124,11 +154,11 @@ def settings():
             username = request.form.get('username')
             try:
                 if users_dict[username]:
-                    tmp_channels_dict = json.loads(json.dumps(channels_dict))
-                    for c in channels_dict:
-                        if channels_dict[c]['owner'] == username:
-                            tmp_channels_dict.pop(c)
-                    channels_dict = tmp_channels_dict
+                    # tmp_channels_dict = json.loads(json.dumps(channels_dict))
+                    # for c in channels_dict:
+                    #     if channels_dict[c]['owner'] == username:
+                    #         tmp_channels_dict.pop(c)
+                    # channels_dict = tmp_channels_dict
                     users_dict.pop(username)
                     session['logged_in'] = False
                     session['logged_pass'] = False
@@ -241,6 +271,23 @@ def login():
 @app.route("/logout", methods = ["GET", "POST"])
 @login_required
 def logout():
+    if session['logged_pass'] == "fakeuser":
+        username = session['logged_in']
+        try:
+            if users_dict[username]:
+                # tmp_channels_dict = json.loads(json.dumps(channels_dict))
+                # for c in channels_dict:
+                #     if channels_dict[c]['owner'] == username:
+                #         tmp_channels_dict.pop(c)
+                # channels_dict = tmp_channels_dict
+                users_dict.pop(username)
+                session['logged_in'] = False
+                session['logged_pass'] = False
+                return redirect(url_for('index'))
+            else:
+                return render_template('error.html', message = "User does not exist")
+        except:
+            return render_template('error.html', message = "User does not exist")
     session['logged_in'] = False
     session['logged_pass'] = False
     return redirect(url_for('index'))

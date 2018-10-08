@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}
+connectMe: Peak In
+{% endblock %}
+
+{% block body %}
+<div class="container cont">
+<form action="{{ url_for('peekin')}}" method="post">
+	<div class="row">
+    <div class="col col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-sm-8 offset-sm-2">
+        <div class="card text-center card  bg-default mb-3">
+          <div class="card-header">
+            Peek In
+          </div>
+          <div class="card-body">
+              <input id="in_username" type="text" name="username" class="form-control input-sm chat-input" placeholder="Display Name" autofocus/>
+							<span id="checkuser"></span>
+          </div>
+          <div class="card-footer text-muted">
+            <button class="btn btn-secondary" id="btn_peekin" disabled>Submit</button>
+						<hr><a href="{{ url_for('login')}}"><i class="fas fa-sign-in-alt"></i> Sign In</a><br>
+						<a href="{{ url_for('forgotpassword')}}">Forgot Password</a>
+          </div>
+        </div>
+  		</div>
+		</div>
+</form>
+</div>
+
+    <script type="text/javascript">
+
+      localStorage.removeItem('last_channel');
+
+      document.addEventListener('DOMContentLoaded', () => {
+
+      // check session logged in
+      ButtonDisplay("{{session['logged_in']}}");
+
+			// userdict
+			users_dict = {{users_dict|safe}};
+
+      document.onkeyup = () => {
+        if (document.querySelector('#in_username').value.length > 0 && document.querySelector('#in_username').value.length == document.querySelector('#in_username').value.trim().length){
+					if(Object.keys(users_dict).indexOf(document.querySelector('#in_username').value) != -1){
+						document.querySelector('#btn_peekin').disabled = true;
+						document.querySelector('#checkuser').innerHTML = "<br>User Already Exist!";
+					} else {
+						document.querySelector('#btn_peekin').disabled = false;
+						document.querySelector('#checkuser').innerHTML = "";
+					}
+        } else {
+          document.querySelector('#btn_peekin').disabled = true;
+					document.querySelector('#checkuser').innerHTML = "";
+        }
+      };
+
+      });
+
+    </script>
+
+{% endblock %}
